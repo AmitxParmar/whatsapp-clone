@@ -6,8 +6,16 @@ import { auth } from "@/utils/FirebaseConfig";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 function login() {
-  const handleLogin = () => {
-    alert("login");
+  const handleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    const {
+      user: { displayName: name, email, photoUrl: profileImage },
+    } = await signInWithPopup(auth, provider);
+    try {
+      if(email){}
+    } catch (err) {
+      console.log(err)
+    }
   };
 
   return (
