@@ -4,17 +4,39 @@ import { FcGoogle } from "react-icons/fc";
 
 import { auth } from "@/utils/FirebaseConfig";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useStateProvider } from "@/context/StateContext";
 
 function login() {
+  const router = useRouter();
+
+  const { dispatch } = useStateProvider();
+
   const handleLogin = async () => {
     const provider = new GoogleAuthProvider();
     const {
       user: { displayName: name, email, photoUrl: profileImage },
     } = await signInWithPopup(auth, provider);
     try {
-      if(email){}
+      if (email) {
+        const { data } = await axios.post(CHECK_USER_ROUTE, { email });
+        if (!data.status) {
+          dispatch({ type: reducerCases.SET_NEW_USER, newUser: true });
+          dispatch({
+            type: reducerCases.SET_USER_INFO,
+            userInfo: {
+              name,
+              email,
+              profileImage,
+              status: "Available",
+            },
+          });
+          router.push("/onboarding");
+        }
+      }
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   };
 

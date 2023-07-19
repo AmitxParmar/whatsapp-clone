@@ -36,6 +36,11 @@ dependencies:
     specifier: ^4.8.4
     version: 4.8.4
 
+devDependencies:
+  '@types/node':
+    specifier: ^20.4.2
+    version: 20.4.2
+
 packages:
 
   /@cspotcode/source-map-support@0.8.1:
@@ -116,7 +121,6 @@ packages:
 
   /@types/node@20.4.2:
     resolution: {integrity: sha512-Dd0BYtWgnWJKwO1jkmTrzofjK2QXXcai0dmtzvIBhcA+RsG5h8R3xlyta0kGOZRNfL9GuRtb1knmPEhQrePCEw==}
-    dev: false
 
   /abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
