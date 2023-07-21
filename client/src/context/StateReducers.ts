@@ -1,21 +1,22 @@
-import { reducerCases } from "./constants";
+import { ReducerCases, UserActions, IInitialState, UserState } from "@/types/types";
 
-export const initialState = {
+
+export const initialState: IInitialState = {
   userInfo: undefined,
   newUser: false,
 };
 
-const reducer = (state, action) => {
+const reducer = (state: UserState, action: UserActions) => {
   switch (action.type) {
-    case reducerCases.SET_USER_INFO:
+    case ReducerCases.SET_USER_INFO:
       return {
         ...state,
-        userInfo: action.userInfo,
+        userInfo: action.payload,
       };
-    case reducerCases.SET_NEW_USER:
+    case ReducerCases.SET_NEW_USER:
       return {
         ...state,
-        newUser: action.newUser,
+        newUser: action.payload,
       };
     default:
       return state;

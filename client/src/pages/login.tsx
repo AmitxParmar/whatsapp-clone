@@ -8,6 +8,8 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useStateProvider } from "@/context/StateContext";
 
+import { ReducerCases } from "@/types/types";
+
 function login() {
   const router = useRouter();
 
@@ -22,9 +24,9 @@ function login() {
       if (email) {
         const { data } = await axios.post(CHECK_USER_ROUTE, { email });
         if (!data.status) {
-          dispatch({ type: reducerCases.SET_NEW_USER, newUser: true });
+          dispatch({ type: ReducerCases.SET_NEW_USER, newUser: true });
           dispatch({
-            type: reducerCases.SET_USER_INFO,
+            type: ReducerCases.SET_USER_INFO,
             userInfo: {
               name,
               email,
