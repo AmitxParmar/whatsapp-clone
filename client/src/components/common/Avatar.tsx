@@ -7,11 +7,13 @@ import React, {
   useEffect,
   useState,
 } from "react";
+
 import { FaCamera } from "react-icons/fa";
 
 import ContextMenu from "./ContextMenu";
 import PhotoPicker from "./PhotoPicker";
 import PhotoLibrary from "./PhotoLibrary";
+import CapturePhoto from "./CapturePhoto";
 
 interface IAvatar {
   type: "sm" | "lg" | "xl";
@@ -23,6 +25,7 @@ const Avatar: React.FC<IAvatar> = ({ type, image, setImage }) => {
   const [hover, setHover] = useState<boolean>(false);
   const [grabPhoto, setGrabPhoto] = useState<boolean>(false);
   const [showPhotoLibrary, setShowPhotoLibrary] = useState<boolean>(false);
+  const [showCapturePhoto, setShowCapturePhoto] = useState<boolean>(false);
 
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
 
@@ -52,7 +55,12 @@ const Avatar: React.FC<IAvatar> = ({ type, image, setImage }) => {
   }, [grabPhoto]);
 
   const contextMenuOptions = [
-    { name: "Take Photo", callback: () => {} },
+    {
+      name: "Take Photo",
+      callback: () => {
+        setShowCapturePhoto(true);
+      },
+    },
     {
       name: "Choose From Library",
       callback: () => {
@@ -130,7 +138,13 @@ const Avatar: React.FC<IAvatar> = ({ type, image, setImage }) => {
           setContextMenu={setIsContextMenuVisible}
         />
       )}
-      {showPhotoLibrary && <PhotoLibrary setImage={setImage} hidePhotoLibrary={setShowPhotoLibrary} />}
+      {showPhotoLibrary && (
+        <PhotoLibrary
+          setImage={setImage}
+          hidePhotoLibrary={setShowPhotoLibrary}
+        />
+      )}
+      {showCapturePhoto && <CapturePhoto />}
       {grabPhoto && <PhotoPicker onChange={photoPickerChange} />}
     </>
   );
