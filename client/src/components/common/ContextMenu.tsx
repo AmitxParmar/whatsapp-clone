@@ -1,8 +1,6 @@
 import React, {
   useEffect,
-  type SetStateAction,
   type SyntheticEvent,
-  ReactElement,
 } from "react";
 
 type Cordinates = {
@@ -35,7 +33,7 @@ const ContextMenu: React.FC<IContextMenu> = ({
       if (event.target.id !== "context-opener") {
         if (
           contextMenuRef.current &&
-          !contextMenuRef.current.contains(event.target)
+          contextMenuRef.current.contains(event.target)
         ) {
           setContextMenu(false);
         }

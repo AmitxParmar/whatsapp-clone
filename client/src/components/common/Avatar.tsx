@@ -11,6 +11,7 @@ import { FaCamera } from "react-icons/fa";
 
 import ContextMenu from "./ContextMenu";
 import PhotoPicker from "./PhotoPicker";
+import PhotoLibrary from "./PhotoLibrary";
 
 interface IAvatar {
   type: "sm" | "lg" | "xl";
@@ -21,6 +22,7 @@ interface IAvatar {
 const Avatar: React.FC<IAvatar> = ({ type, image, setImage }) => {
   const [hover, setHover] = useState<boolean>(false);
   const [grabPhoto, setGrabPhoto] = useState<boolean>(false);
+  const [showPhotoLibrary, setShowPhotoLibrary] = useState<boolean>(false);
 
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
 
@@ -36,22 +38,31 @@ const Avatar: React.FC<IAvatar> = ({ type, image, setImage }) => {
     });
     setIsContextMenuVisible(true);
   };
+
   useEffect(() => {
     if (grabPhoto) {
       const data = document.getElementById("photo-picker");
       data?.click();
       document.body.onfocus = (e) => {
-        setGrabPhoto(false);
+        setTimeout(() => {
+          setGrabPhoto(false);
+        }, 1000);
       };
     }
-  }, []);
+  }, [grabPhoto]);
+
   const contextMenuOptions = [
     { name: "Take Photo", callback: () => {} },
-    { name: "Choose From Library", callback: () => {} },
+    {
+      name: "Choose From Library",
+      callback: () => {
+        setShowPhotoLibrary(true);
+      },
+    },
     {
       name: "Upload Photo",
       callback: () => {
-        setGrabImage(true);
+        setGrabPhoto(true);
       },
     },
     {
@@ -72,7 +83,7 @@ const Avatar: React.FC<IAvatar> = ({ type, image, setImage }) => {
     };
     reader.readAsDataURL(file);
     setTimeout(() => {
-      setImage(!data.src);
+      setImage(data.src);
     }, 100);
   };
 
@@ -110,6 +121,7 @@ const Avatar: React.FC<IAvatar> = ({ type, image, setImage }) => {
           </div>
         )}
       </div>
+
       {isContextMenuVisible && (
         <ContextMenu
           options={contextMenuOptions}
@@ -118,6 +130,7 @@ const Avatar: React.FC<IAvatar> = ({ type, image, setImage }) => {
           setContextMenu={setIsContextMenuVisible}
         />
       )}
+      {showPhotoLibrary && <PhotoLibrary setImage={setImage} hidePhotoLibrary={setShowPhotoLibrary} />}
       {grabPhoto && <PhotoPicker onChange={photoPickerChange} />}
     </>
   );

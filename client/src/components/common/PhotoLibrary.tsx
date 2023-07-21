@@ -1,7 +1,12 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
-function PhotoLibrary() {
-  return <div>PhotoLibrary</div>;
+interface IPhotoLibrary {
+  setImage: Dispatch<SetStateAction<string>>;
+  hidePhotoLibrary: Dispatch<SetStateAction<boolean>>;
 }
+
+const PhotoLibrary: React.FC<IPhotoLibrary> = () => {
+  return <div>PhotoLibrary</div>;
+};
 
 export default PhotoLibrary;
