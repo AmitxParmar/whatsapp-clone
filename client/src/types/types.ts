@@ -5,35 +5,32 @@ export enum ReducerCases {
     SET_NEW_USER = "SET_NEW_USER",
 }
 
-export type IUser = {
+export type IUserProfile = {
     name: string
     email: number
     profileImage: string
-    status: "Available"
+    status: string
 }
 type INewUser = {
     newUser: boolean
 }
 
 export interface IInitialState {
-    userInfo: IUser | undefined | null;
+    userInfo: IUserProfile | undefined ;
     newUser: boolean
 }
 
-export type UserActions = { type: ReducerCases, payload: { profileImage: string, name: string, email: string, status: "Available" } }
-    | { type: ReducerCases, payload: { newUser: boolean } };
+export type UserActions =
+    | { type: ReducerCases.SET_USER_INFO, payload: IUserProfile }
+    | { type: ReducerCases.SET_NEW_USER, payload: INewUser };
 
 export type UserState = {
-    state: IUser | INewUser
+    userInfo: IUserProfile
+    newUser: INewUser
 }
 
 export interface IStateProvider {
     initialState: IInitialState
-    reducer: Reducer<IUser | INewUser, ReducerCases>
+    reducer: Reducer<UserState, UserActions>
     children: ReactNode
 }
-
-/* export interface UserContext { 
-    initialState: IInitialState
-    re
-} */
