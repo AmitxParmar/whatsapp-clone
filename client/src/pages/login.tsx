@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { useStateProvider } from "@/context/StateContext";
 
 import { ReducerCases } from "@/types/types";
+import { CHECK_USER_ROUTE } from "@/utils/ApiRoutes";
 
 function login() {
   const router = useRouter();

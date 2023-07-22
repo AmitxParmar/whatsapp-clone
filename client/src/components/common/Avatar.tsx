@@ -144,7 +144,9 @@ const Avatar: React.FC<IAvatar> = ({ type, image, setImage }) => {
           hidePhotoLibrary={setShowPhotoLibrary}
         />
       )}
-      {showCapturePhoto && <CapturePhoto />}
+      {showCapturePhoto && (
+        <CapturePhoto setImage={setImage} hide={setShowCapturePhoto} />
+      )}
       {grabPhoto && <PhotoPicker onChange={photoPickerChange} />}
     </>
   );

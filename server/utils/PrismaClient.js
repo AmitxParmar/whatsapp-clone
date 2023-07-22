@@ -1,10 +1,10 @@
-import { PrismaClient } from "@prisma/client";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const { PrismaClient } = require("@prisma/client");
+
 let prismaInstance;
 
-function getPrismainstance() {
-  if (!prismaInstance) prismaInstance = newPrismaClient();
+export default function getPrismaInstance() {
+  if (!prismaInstance) prismaInstance = new PrismaClient();
   return prismaInstance;
 }
-
-
-export default getPrismainstance
