@@ -1,19 +1,48 @@
-import { IStateProvider } from "@/types/types";
-import { createContext, useContext, useReducer } from "react";
+import {
+  IInitialState,
+  IStateProvider,
+  UserActions,
+  UserState,
+} from "@/types/types";
 
-interface IContext {
-  
+import React, {
+  type ReactNode,
+  Dispatch,
+  createContext,
+  useContext,
+  useReducer,
+} from "react";
+
+interface IStateContextValue {
+  state: UserState | IInitialState;
+  dispatch: Dispatch<UserActions>;
 }
-export const StateContext = createContext<>(null);
 
-export const StateProvider: React.FC<IStateProvider> = ({
-  initialState,
-  reducer,
-  children,
-}) => (
-  <StateContext.Provider value={useReducer(reducer, initialState) }>
-    {children}
-  </StateContext.Provider>
-);
+const initialState: IInitialState = {
+  userInfo: undefined,
+  newUser: false,
+};
+const initialContexValue: IStateContextValue = {
+  state: initialState,
+  dispatch: () => {},
+};
+
+export const StateContext =
+  createContext<IStateContextValue>(initialContexValue);
+
+export const StateProvider: React.FC<{
+  initialState: IInitialState;
+  reducer: (state: UserState, action: UserActions) => UserState;
+  children: ReactNode;
+}> = ({ initialState, reducer, children }) => {
+  
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  return (
+    <StateContext.Provider value={{ state, dispatch }}>
+      {children}
+    </StateContext.Provider>
+  );
+};
 
 export const useStateProvider = () => useContext(StateContext);

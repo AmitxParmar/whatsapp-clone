@@ -6,7 +6,7 @@ export const initialState: IInitialState = {
   newUser: false,
 };
 
-const reducer = (state: UserState, action: UserActions): UserState => {
+const reducer = (state: UserState | IInitialState, action: UserActions): UserState => {
   switch (action.type) {
     case ReducerCases.SET_USER_INFO:
       return {

@@ -11,22 +11,28 @@ export type IUserProfile = {
     profileImage: string
     status: string
 }
-type INewUser = {
-    newUser: boolean
-}
+
 
 export interface IInitialState {
-    userInfo: IUserProfile | undefined ;
+    userInfo: undefined ;
     newUser: boolean
 }
 
 export type UserActions =
-    | { type: ReducerCases.SET_USER_INFO, payload: IUserProfile }
-    | { type: ReducerCases.SET_NEW_USER, payload: INewUser };
+    | {
+        type: ReducerCases.SET_USER_INFO,
+        payload: IUserProfile 
+    }
+    | {
+        type: ReducerCases.SET_NEW_USER,
+        payload: {
+            newUser: boolean
+        }
+    };
 
-export type UserState = {
-    userInfo: IUserProfile
-    newUser: INewUser
+export interface UserState {
+    userInfo: IUserProfile | undefined
+    newUser: boolean | undefined
 }
 
 export interface IStateProvider {

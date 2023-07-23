@@ -14,26 +14,37 @@ import { CHECK_USER_ROUTE } from "@/utils/ApiRoutes";
 function login() {
   const router = useRouter();
 
-  const [{ userInfo, newUser }, dispatch] = useStateProvider();
+  const {
+    state: { userInfo, newUser },
+    dispatch,
+  } = useStateProvider();
 
   useEffect(() => {
-    console.log({ userInfo, newUser },"User,newuserBoolean");
+    console.log({ userInfo, newUser }, "User,newuserBoolean");
     if (userInfo?.id && !newUser) router.push("/");
   }, [userInfo, newUser]);
 
-    
   const handleLogin = async () => {
     const provider = new GoogleAuthProvider();
     const {
-      user: { displayName: name, email, photoUrl: profileImage },
+      user: { displayName: name, email, photoURL: profileImage },
     } = await signInWithPopup(auth, provider);
     try {
       if (email) {
         const { data } = await axios.post(CHECK_USER_ROUTE, { email });
+        console.log(email, "reached email, into dispatch");
+        console.log(data, "data from server,,,");
         if (!data.status) {
+          console.log(data, data.status, "server status check");
           dispatch({ type: ReducerCases.SET_NEW_USER, newUser: true });
+          console.log("dispatch check ", {
+            ReducerCases,
+            name,
+            email,
+            profileImage,
+          });
           dispatch({
-            type: ReducerCases.SET_USER_INFO,
+            type: ReducerCases.SET_NEW_USER,
             userInfo: {
               name,
               email,
@@ -41,6 +52,7 @@ function login() {
               status: "Available",
             },
           });
+
           router.push("/onboarding");
         }
       }
