@@ -18,7 +18,7 @@ import CapturePhoto from "./CapturePhoto";
 interface IAvatar {
   type: "sm" | "lg" | "xl";
   image: string;
-  setImage: Dispatch<SetStateAction<string>>;
+  setImage?: Dispatch<SetStateAction<string>> | undefined;
 }
 
 const Avatar: React.FC<IAvatar> = ({ type, image, setImage }) => {
@@ -76,7 +76,7 @@ const Avatar: React.FC<IAvatar> = ({ type, image, setImage }) => {
     {
       name: "Remove Photo",
       callback: () => {
-        setImage("/default_avatar.png");
+        setImage?.("/default_avatar.png");
       },
     },
   ];
@@ -91,7 +91,7 @@ const Avatar: React.FC<IAvatar> = ({ type, image, setImage }) => {
     };
     reader.readAsDataURL(file);
     setTimeout(() => {
-      setImage(data.src);
+      setImage?.(data.src);
     }, 100);
   };
 

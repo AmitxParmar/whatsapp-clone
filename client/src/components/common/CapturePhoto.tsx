@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { IoClose } from "react-icons/io5";
 
 interface ICapturePhoto {
-  setImage: Dispatch<SetStateAction<string>>;
+  setImage: Dispatch<SetStateAction<string>> | undefined;
   hide: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -16,17 +16,17 @@ const CapturePhoto: FC<ICapturePhoto> = ({ setImage, hide }) => {
         video: true,
         audio: false,
       });
-      videoRef.current.srcObject = stream;
+      videoRef1.current.srcObject = stream;
     };
     startCamera();
     return () => {
-      stream?.getTracks().firEach((track)=>track.stop())
-    }
+      stream?.getTracks().firEach((track) => track.stop());
+    };
   }, []);
   const capturePhoto = () => {
     const canvas = document.createElement("canvas");
     canvas.getContext("2d")?.drawImage(videoRef.current, 0, 0, 300, 150);
-    setImage(canvas.toDataURL("image/jpeg"));
+    setImage?.(canvas.toDataURL("image/jpeg"));
     hide(false);
   };
   return (

@@ -1,21 +1,27 @@
-import React from "react";
+import { useEffect } from "react";
+
 import Image from "next/image";
+import { useRouter } from "next/router";
+import axios from "axios";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { FcGoogle } from "react-icons/fc";
 
-import { auth } from "@/utils/FirebaseConfig";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import axios from "axios";
-import { useRouter } from "next/router";
 import { useStateProvider } from "@/context/StateContext";
-
+import { auth } from "@/utils/FirebaseConfig";
 import { ReducerCases } from "@/types/types";
 import { CHECK_USER_ROUTE } from "@/utils/ApiRoutes";
 
 function login() {
   const router = useRouter();
 
-  const { dispatch } = useStateProvider();
+  const [{ userInfo, newUser }, dispatch] = useStateProvider();
 
+  useEffect(() => {
+    console.log({ userInfo, newUser },"User,newuserBoolean");
+    if (userInfo?.id && !newUser) router.push("/");
+  }, [userInfo, newUser]);
+
+    
   const handleLogin = async () => {
     const provider = new GoogleAuthProvider();
     const {

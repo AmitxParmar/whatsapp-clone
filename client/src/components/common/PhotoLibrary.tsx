@@ -3,7 +3,7 @@ import React, { Dispatch, SetStateAction } from "react";
 import { IoClose } from "react-icons/io5";
 
 interface IPhotoLibrary {
-  setImage: Dispatch<SetStateAction<string>>;
+  setImage: Dispatch<SetStateAction<string>> | undefined;
   hidePhotoLibrary: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -35,7 +35,7 @@ const PhotoLibrary: React.FC<IPhotoLibrary> = ({
           {images.map((image, index) => (
             <div
               onClick={() => {
-                setImage(images[index] as string);
+                setImage?.(images[index] as string);
                 hidePhotoLibrary(false);
               }}
             >
