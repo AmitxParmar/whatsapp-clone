@@ -1,6 +1,4 @@
 import {
-  IInitialState,
-  
   UserActions,
   UserState,
 } from "@/types/types";
@@ -12,16 +10,14 @@ import React, {
   useContext,
   useReducer,
 } from "react";
+import { initialState } from "./StateReducers";
 
 interface IStateContextValue {
-  state: UserState | IInitialState;
+  state: UserState;
   dispatch: Dispatch<UserActions>;
 }
 
-const initialState: IInitialState = {
-  userInfo: undefined,
-  newUser: false,
-};
+
 const initialContexValue: IStateContextValue = {
   state: initialState,
   dispatch: () => {},
@@ -31,7 +27,7 @@ export const StateContext =
   createContext<IStateContextValue>(initialContexValue);
 
 export const StateProvider: React.FC<{
-  initialState: IInitialState;
+  initialState: UserState;
   reducer: (state: UserState, action: UserActions) => UserState;
   children: ReactNode;
 }> = ({ initialState, reducer, children }) => {

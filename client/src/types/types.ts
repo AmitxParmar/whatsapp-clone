@@ -6,23 +6,13 @@ export enum ReducersCases {
 }
 
 export type IUserProfile = {
-    id?:string
+    id?: string
     name: string | null
     email: string | null | undefined
     profileImage: string | null
     status: string | null
-
 }
 
-
-export interface IInitialState {
-    userInfo: undefined;
-    newUser: boolean
-}
-console.log(
-    ReducersCases.SET_USER_INFO,
-    ReducersCases.SET_NEW_USER,
-)
 export type UserActions =
     | {
         type: ReducersCases.SET_USER_INFO,
@@ -31,15 +21,15 @@ export type UserActions =
     | {
         type: ReducersCases.SET_NEW_USER,
         newUser: boolean
-    } ;
+    };
 
 export interface UserState {
     userInfo: IUserProfile
-    newUser: boolean | undefined
+    newUser: boolean | undefined | null
 }
 
 export interface IStateProvider {
-    initialState: IInitialState
+    initialState: UserState
     reducer: Reducer<UserState, UserActions>
     children: ReactNode
 }

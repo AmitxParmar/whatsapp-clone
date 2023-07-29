@@ -1,11 +1,19 @@
-import { UserActions,ReducersCases, IInitialState, UserState } from "@/types/types";
+import { UserActions, ReducersCases, UserState } from "@/types/types";
 
-export const initialState: IInitialState = {
-  userInfo: undefined,
-  newUser: false,
+export const initialState: UserState = {
+  // Define your initial state properties here
+  userInfo: {
+    name: "",
+    email: "",
+    profileImage: "",
+    status: "",
+  },
+  newUser: null,
 };
 
-const reducer = (state: UserState, action: UserActions): UserState => {
+type Reducer<S, A> = (state: S, action: A) => S;
+
+const reducer: Reducer<UserState, UserActions> = (state, action: UserActions) => {
   switch (action.type) {
     case ReducersCases.SET_USER_INFO:
       localStorage.setItem('userInfo', JSON.stringify(action.userInfo))

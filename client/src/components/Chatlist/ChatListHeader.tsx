@@ -2,14 +2,13 @@ import React from "react";
 import Avatar from "../common/Avatar";
 import { useStateProvider } from "@/context/StateContext";
 import { BsFillChatLeftTextFill, BsThreeDotsVertical } from "react-icons/bs";
-import SearchBar from "./SearchBar";
 
 function ChatListHeader() {
   const {
     state: { userInfo },
     dispatch,
   } = useStateProvider();
-
+  console.log(userInfo?.profileImage);
   return (
     <div className="h-16 px-4 py-3 flex justify-between items-center">
       <div className="cursor-pointer">
