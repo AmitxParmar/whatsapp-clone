@@ -1,22 +1,23 @@
-import { ReducerCases, UserActions, IInitialState, UserState } from "@/types/types";
-
+import { UserActions,ReducersCases, IInitialState, UserState } from "@/types/types";
 
 export const initialState: IInitialState = {
   userInfo: undefined,
   newUser: false,
 };
 
-const reducer = (state: UserState | IInitialState, action: UserActions): UserState => {
+const reducer = (state: UserState, action: UserActions): UserState => {
   switch (action.type) {
-    case ReducerCases.SET_USER_INFO:
+    case ReducersCases.SET_USER_INFO:
+      localStorage.setItem('userInfo', JSON.stringify(action.userInfo))
+      console.log('from reducer saved userInfo firebase!!', action.userInfo);
       return {
         ...state,
-        userInfo: action.payload,
+        userInfo: action.userInfo,
       };
-    case ReducerCases.SET_NEW_USER:
+    case ReducersCases.SET_NEW_USER:
       return {
         ...state,
-        newUser: action.payload,
+        newUser: action.newUser,
       };
     default:
       return state;

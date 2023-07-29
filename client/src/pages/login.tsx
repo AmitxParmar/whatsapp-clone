@@ -8,7 +8,7 @@ import { FcGoogle } from "react-icons/fc";
 
 import { useStateProvider } from "@/context/StateContext";
 import { auth } from "@/utils/FirebaseConfig";
-import { ReducerCases } from "@/types/types";
+import { ReducersCases } from "@/types/types";
 import { CHECK_USER_ROUTE } from "@/utils/ApiRoutes";
 
 function login() {
@@ -21,6 +21,7 @@ function login() {
 
   useEffect(() => {
     console.log({ userInfo, newUser }, "User,newuserBoolean");
+
     if (userInfo?.id && !newUser) router.push("/");
   }, [userInfo, newUser]);
 
@@ -36,15 +37,16 @@ function login() {
         console.log(data, "data from server,,,");
         if (!data.status) {
           console.log(data, data.status, "server status check");
-          dispatch({ type: ReducerCases.SET_NEW_USER, newUser: true });
+          console.log();
+          dispatch({ type: ReducersCases.SET_NEW_USER, newUser: true });
           console.log("dispatch check ", {
-            ReducerCases,
+            ReducersCases,
             name,
             email,
             profileImage,
           });
           dispatch({
-            type: ReducerCases.SET_NEW_USER,
+            type: ReducersCases.SET_USER_INFO,
             userInfo: {
               name,
               email,

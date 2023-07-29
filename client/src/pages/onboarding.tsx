@@ -1,7 +1,7 @@
 import Avatar from "@/components/common/Avatar";
 import Input from "@/components/common/Input";
 import { useStateProvider } from "@/context/StateContext";
-import { ReducerCases } from "@/types/types";
+import { ReducersCases } from "@/types/types";
 import { ONBOARD_USER_ROUTE } from "@/utils/ApiRoutes";
 import axios from "axios";
 import Image from "next/image";
@@ -13,20 +13,24 @@ function onboarding() {
   const router = useRouter();
 
   const { state, dispatch } = useStateProvider();
-  console.log(state.userInfo, state.newUser, "user,newUserBoolean");
+
   const [name, setName] = useState<string>("");
   const [about, setAbout] = useState<string>("");
   const [image, setImage] = useState<string>("/default_avatar.png");
+
   const { userInfo, newUser } = state;
-  console.log(userInfo);
+  
+
   useEffect(() => {
     if (!newUser && !userInfo?.email) router.push("/login");
     else if (!newUser && userInfo?.email) router.push("/");
   }, [newUser, userInfo, router]);
 
+  
   const onboardUserHandler = async () => {
     if (validateDetails()) {
       const email = state?.userInfo?.email;
+      console.log(email, "email");
       try {
         const { data } = await axios.post(ONBOARD_USER_ROUTE, {
           email,
@@ -34,18 +38,20 @@ function onboarding() {
           about,
           image,
         });
+        console.log(data)
         if (data.status) {
-          dispatch({ type: ReducerCases.SET_NEW_USER, payload: true });
+          console.time("before dispatch");
+          dispatch({ type: ReducersCases.SET_NEW_USER, newUser: true });
           dispatch({
-            type: ReducerCases.SET_USER_INFO,
-            payload: {
+            type: ReducersCases.SET_USER_INFO,
+            userInfo: {
               name,
               email,
               profileImage: image,
               status: "Available",
             },
           });
-
+          console.time("after dispatch")
           router.push("/");
         }
       } catch (err) {
