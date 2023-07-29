@@ -7,7 +7,7 @@ export enum ReducerCases {
 
 export type IUserProfile = {
     name: string
-    email: number
+    email: string | undefined
     profileImage: string
     status: string
 }
@@ -25,13 +25,11 @@ export type UserActions =
     }
     | {
         type: ReducerCases.SET_NEW_USER,
-        payload: {
-            newUser: boolean
-        }
+        payload: boolean
     };
 
 export interface UserState {
-    userInfo: IUserProfile | undefined
+    userInfo: IUserProfile
     newUser: boolean | undefined
 }
 

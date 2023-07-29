@@ -1,6 +1,6 @@
 import {
   IInitialState,
-  IStateProvider,
+  
   UserActions,
   UserState,
 } from "@/types/types";

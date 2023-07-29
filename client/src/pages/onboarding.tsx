@@ -12,20 +12,21 @@ import React, { useEffect, useState } from "react";
 function onboarding() {
   const router = useRouter();
 
-  const [state,dispatch]= useStateProvider();
-  console.log(state.userInfo,state.newUser,'user,newUserBoolean')
+  const { state, dispatch } = useStateProvider();
+  console.log(state.userInfo, state.newUser, "user,newUserBoolean");
   const [name, setName] = useState<string>("");
   const [about, setAbout] = useState<string>("");
   const [image, setImage] = useState<string>("/default_avatar.png");
   const { userInfo, newUser } = state;
-  console.log(userInfo)
+  console.log(userInfo);
   useEffect(() => {
-    if (!newUser && !userInfo?.email) router.push("/login")
-    else if(!newUser && userInfo?.email) router.push("/")
-},[newUser,userInfo,router])
+    if (!newUser && !userInfo?.email) router.push("/login");
+    else if (!newUser && userInfo?.email) router.push("/");
+  }, [newUser, userInfo, router]);
+
   const onboardUserHandler = async () => {
     if (validateDetails()) {
-      const email = state.userInfo.email;
+      const email = state?.userInfo?.email;
       try {
         const { data } = await axios.post(ONBOARD_USER_ROUTE, {
           email,
@@ -34,10 +35,10 @@ function onboarding() {
           image,
         });
         if (data.status) {
-          dispatch({ type: ReducerCases.SET_NEW_USER, newUser: true });
+          dispatch({ type: ReducerCases.SET_NEW_USER, payload: true });
           dispatch({
             type: ReducerCases.SET_USER_INFO,
-            userInfo: {
+            payload: {
               name,
               email,
               profileImage: image,
@@ -72,8 +73,9 @@ function onboarding() {
           <Input name="Display Name" state={name} setState={setName} label />
           <Input name="About" state={about} setState={setAbout} label />
           <div className="flex items-center justify-center">
-            <button className="flex items-center justify-center gap-7 bg-search-input-container-background p-5 rounded-lg"
-            onClick={()=> onboardUserHandler()}
+            <button
+              className="flex items-center justify-center gap-7 bg-search-input-container-background p-5 rounded-lg"
+              onClick={() => onboardUserHandler()}
             >
               Create Profile
             </button>

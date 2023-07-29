@@ -10,7 +10,10 @@ import { useStateProvider } from "@/context/StateContext";
 
 function Main() {
   const router = useRouter();
-  const [{ userInfo }, dispatch] = useStateProvider();
+  const {
+    state: { userInfo },
+    dispatch,
+  } = useStateProvider();
 
   const [redirectLogin, setRedirectLogin] = useState<boolean>(false);
 
