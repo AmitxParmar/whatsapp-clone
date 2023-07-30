@@ -10,7 +10,7 @@ export type IUserProfile = {
     id?: string
     name: string | null
     email: string | null | undefined
-    profileImage: string | null
+    profilePicture: string | null
     status: string | null
 }
 

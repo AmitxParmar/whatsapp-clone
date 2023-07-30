@@ -5,7 +5,7 @@ export const initialState: UserState = {
   userInfo: {
     name: "",
     email: "",
-    profileImage: "",
+    profilePicture: "",
     status: "",
   },
   newUser: null,

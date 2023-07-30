@@ -47,7 +47,7 @@ function onboarding() {
             userInfo: {
               name,
               email,
-              profileImage: image,
+              profilePicture: image,
               status: "Available",
             },
           });

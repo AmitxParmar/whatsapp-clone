@@ -28,7 +28,7 @@ function login() {
   const handleLogin = async () => {
     const provider = new GoogleAuthProvider();
     const {
-      user: { displayName: name, email, photoURL: profileImage },
+      user: { displayName: name, email, photoURL: profilePicture },
     } = await signInWithPopup(auth, provider);
     try {
       if (email) {
@@ -43,14 +43,14 @@ function login() {
             ReducersCases,
             name,
             email,
-            profileImage,
+            profilePicture,
           });
           dispatch({
             type: ReducersCases.SET_USER_INFO,
             userInfo: {
               name,
               email,
-              profileImage,
+              profilePicture,
               status: "Available",
             },
           });

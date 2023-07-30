@@ -17,7 +17,7 @@ function ChatListHeader() {
   return (
     <div className="h-16 px-4 py-3 flex justify-between items-center">
       <div className="cursor-pointer">
-        <Avatar type="sm" image={userInfo?.profileImage as string} />
+        <Avatar type="sm" image={userInfo?.profilePicture as string} />
       </div>
       <div className="flex gap-6">
         <BsFillChatLeftTextFill

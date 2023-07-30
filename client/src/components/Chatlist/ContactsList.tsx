@@ -53,13 +53,13 @@ function ContactsList() {
         {Object.entries(allContacts).map(
           ([initialLetter, userList]: [
             initialLetter: string,
-            userList: IUserProfile[][]
+            userList: IUserProfile[]
           ]) => (
             <div key={Date.now() + initialLetter}>
               <div className="text-teal-light pl-10 py-5">{initialLetter}</div>
               {userList.map((contact) => (
                 <ChatListItem
-                  key={Math.random() * 222}
+                  key={contact.id}
                   data={contact}
                   isContactPage={true}
                 />
