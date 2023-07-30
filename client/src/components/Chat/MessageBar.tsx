@@ -6,7 +6,7 @@ import { MdSend } from "react-icons/md";
 
 function MessageBar() {
   return (
-    <div className="bg-panel-header-background h-20 px-4 flex items-center gap-6 relative">
+    <div className="bg-panel-header-background h-20 py-12 px-4 flex items-center gap-6 relative ">
       <>
         <div className="flex gap-6">
           <BsEmojiSmile

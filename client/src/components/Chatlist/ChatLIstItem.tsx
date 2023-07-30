@@ -1,7 +1,14 @@
+import { IUserProfile } from "@/types/types";
 import React from "react";
 
-function ChatLIstItem() {
+interface IChatListItem {
+  isContactPage: boolean;
+  data: IUserProfile[];
+}
+
+function ChatListItem({ isContactPage, data }: IChatListItem) {
+  console.log({ isContactPage, data });
   return <div>ChatLIstItem</div>;
 }
 
-export default ChatLIstItem;
+export default ChatListItem;
