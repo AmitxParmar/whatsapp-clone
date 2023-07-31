@@ -9,18 +9,19 @@ import { useRouter } from "next/router";
 import { useStateProvider } from "@/context/StateContext";
 import Chat from "./Chat/Chat";
 
-
 function Main() {
   const router = useRouter();
   const {
-    state: { userInfo },
+    state: { userInfo, currentChatUser },
     dispatch,
   } = useStateProvider();
 
   const [redirectLogin, setRedirectLogin] = useState<boolean>(false);
+
   useEffect(() => {
     if (redirectLogin) router.push("/login");
-  }, []);
+  }, [redirectLogin]);
+
   onAuthStateChanged(auth, async (currentUser) => {
     if (!currentUser) setRedirectLogin(true);
     if (!userInfo && currentUser?.email) {
@@ -36,8 +37,7 @@ function Main() {
   return (
     <div className="grid grid-cols-main h-screen w-screen max-h-screen max-w-full over">
       <ChatList />
-      {/* <Empty /> */}
-      <Chat />
+      {currentChatUser ? <Chat /> : <Empty />}
     </div>
   );
 }
