@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ChatList from "./Chatlist/ChatList";
 import Empty from "./Empty";
 import { onAuthStateChanged } from "firebase/auth";
@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { useStateProvider } from "@/context/StateContext";
 import Chat from "./Chat/Chat";
 
+
 function Main() {
   const router = useRouter();
   const {
@@ -17,7 +18,9 @@ function Main() {
   } = useStateProvider();
 
   const [redirectLogin, setRedirectLogin] = useState<boolean>(false);
-
+  useEffect(() => {
+    if (redirectLogin) router.push("/login");
+  }, []);
   onAuthStateChanged(auth, async (currentUser) => {
     if (!currentUser) setRedirectLogin(true);
     if (!userInfo && currentUser?.email) {
