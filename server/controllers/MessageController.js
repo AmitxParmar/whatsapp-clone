@@ -4,7 +4,7 @@ export const addMessage = async (req, res, next) => {
   try {
     const prisma = getPrismaInstance();
     const { message, from, to } = req.body;
-    const getuser = onlineUsers.get(to);
+    const getUser = onlineUsers.get(to);
     if (message && from && to) {
       const newMessage = await prisma.messages.create({
         date: {
