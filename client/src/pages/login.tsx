@@ -51,7 +51,7 @@ function login() {
               name,
               email,
               profilePicture,
-              status: "Available",
+              about: "Available",
             },
           });
 

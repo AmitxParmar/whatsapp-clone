@@ -6,10 +6,11 @@ export const initialState: UserState = {
     name: "",
     email: "",
     profilePicture: "",
-    status: "",
+    about: "",
   },
   newUser: null,
-  contactsPage: false
+  contactsPage: false,
+  currentChatUser: undefined
 };
 
 type Reducer<S, A> = (state: S, action: A) => S;
@@ -32,6 +33,11 @@ const reducer: Reducer<UserState, UserActions> = (state, action: UserActions) =>
       return {
         ...state,
         contactsPage: !state.contactsPage,
+      }
+    case ReducersCases.CHANGE_CURRENT_CHAT_USER:
+      return {
+        ...state,
+        currentChatUser: action.user
       }
     default:
       return state;

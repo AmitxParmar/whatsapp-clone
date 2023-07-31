@@ -1,25 +1,54 @@
-import { IUserProfile } from "@/types/types";
+import { IUserProfile, ReducersCases } from "@/types/types";
 import React from "react";
 import Avatar from "../common/Avatar";
+import { useStateProvider } from "@/context/StateContext";
 
 interface IChatListItem {
   isContactPage: boolean;
   data: IUserProfile;
 }
 
-const ChatListItem = ({ isContactPage, data }: IChatListItem) => {
+const ChatListItem = ({ isContactPage=false, data }: IChatListItem) => {
+  const {
+    state: { userInfo, currentChatUser },
+    dispatch,
+  } = useStateProvider();
   console.log({ isContactPage, data });
+
+  const handleContactClick = () => {
+    if (currentChatUser?.id === data?.id) {
+      dispatch({
+        type: ReducersCases.CHANGE_CURRENT_CHAT_USER,
+        user: {...data},
+      });
+      console.log("data currentUser", data);
+      dispatch({ type: ReducersCases.SET_CONTACT_PAGE });
+    }
+  };
+
   return (
     <div
-      className={`flex cursor-pointer items-center hover:bg-background-default-hover ${
+      className={`flex py-3 cursor-pointer items-center hover:bg-background-default-hover ${
         isContactPage ? "bg-transparent" : "bg-white"
       }`}
+      onClick={() => handleContactClick()}
     >
-      <div className="min-w-fit px-5 pt-3 pb-1">
-        <Avatar
-          type="lg"
-          image={data?.profilePicture as string}
-        />
+      <div className="min-w-fit px-5  pb-1">
+        <Avatar type="lg" image={data?.profilePicture as string} />
+      </div>
+      <div className="min-h-full flex flex-col justify-center mt-3 pr-2 w-full">
+        <div className="flex justify-between">
+          <div>
+            <span className="text-white">{data?.name}</span>
+          </div>
+        </div>
+        <div className="flex border-b border-conversation-border pb-2 pt-1 p3-2">
+          <div className="flex justify-between w-full">
+            <span className="text-secondary line-clamp-1 text-sm">
+              {data?.about || "\u00A0"}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );
