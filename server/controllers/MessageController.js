@@ -7,7 +7,7 @@ export const addMessage = async (req, res, next) => {
     const getUser = onlineUsers.get(to);
     if (message && from && to) {
       const newMessage = await prisma.messages.create({
-        date: {
+        data: {
           message,
           sender: {
             connect: { id: parseInt(from) },
@@ -17,7 +17,7 @@ export const addMessage = async (req, res, next) => {
           },
           messageStatus: getUser ? "delivered" : "sent",
         },
-        include: { sender: true, receiver: true },
+        include: { sender: true, reciever: true },
       });
       return res.status(201).send({ message: newMessage });
     }

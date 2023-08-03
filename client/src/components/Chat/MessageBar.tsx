@@ -17,13 +17,14 @@ function MessageBar() {
   const sendMessage = async () => {
     try {
       const { data } = await axios.post(ADD_MESSAGE_ROUTE, {
-        to: currentChatUser?.id,
-        from: userInfo?.id,
+        to: currentChatUser?.id ?? 1,
+        from: userInfo?.id ?? 3,
         message,
       });
-      setMessage("")
+      console.log(data, "data recieved after sending msg");
+      setMessage("");
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   };
 
