@@ -54,7 +54,7 @@ export const getMessage = async (req, res, next) => {
 
     messages.forEach((message, index) => {
       if (
-        message.messageStstaus !== "read" &&
+        message.messageStatus !== "read" &&
         message.senderId === parseInt(to)
       ) {
         messages[index].messageStatus = "read";
