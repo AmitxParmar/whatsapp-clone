@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", AuthRoutes);
-app.use('/api/message',MessageRoutes)
+app.use('/api/messages',MessageRoutes)
 
 
 const server = app.listen(process.env.PORT, () => {

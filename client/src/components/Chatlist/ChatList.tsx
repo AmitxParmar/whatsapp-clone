@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+
 import ChatListHeader from "./ChatListHeader";
 import SearchBar from "./SearchBar";
 import List from "./List";
-import { useStateProvider } from "@/context/StateContext";
 import ContactsList from "./ContactsList";
+
+import { useStateProvider } from "@/context/StateContext";
 
 function ChatList() {
   const {

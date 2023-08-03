@@ -8,28 +8,30 @@ interface IChatListItem {
   data: IUserProfile;
 }
 
-const ChatListItem = ({ isContactPage=false, data }: IChatListItem) => {
+const ChatListItem = ({ isContactPage = false, data }: IChatListItem) => {
   const {
     state: { userInfo, currentChatUser },
     dispatch,
   } = useStateProvider();
-  console.log({ isContactPage, data });
 
   const handleContactClick = () => {
-    if (currentChatUser?.id === data?.id) {
+    console.log("handleContactClick");
+    /* if (currentChatUser?.id === data?.id) { */
+      console.log(data, "currentUser state, ChatLisetitem");
+
       dispatch({
         type: ReducersCases.CHANGE_CURRENT_CHAT_USER,
-        user: {...data},
+        user: data,
       });
-      console.log("data currentUser", data);
+
       dispatch({ type: ReducersCases.SET_CONTACT_PAGE });
-    }
+    /* } */
   };
 
   return (
     <div
       className={`flex py-3 cursor-pointer items-center hover:bg-background-default-hover ${
-        isContactPage ? "bg-transparent" : "bg-white"
+        isContactPage && null
       }`}
       onClick={() => handleContactClick()}
     >

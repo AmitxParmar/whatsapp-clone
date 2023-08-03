@@ -52,7 +52,7 @@ export const getMessage = async (req, res, next) => {
 
     const unreadMessages = [];
 
-    messages.forEach = (message, index) => {
+    messages.forEach((message, index) => {
       if (
         message.messageStstaus !== "read" &&
         message.senderId === parseInt(to)
@@ -60,8 +60,8 @@ export const getMessage = async (req, res, next) => {
         messages[index].messageStatus = "read";
         unreadMessages.push(message.id);
       }
-    };
-    await prisma.message.updateMany({
+    });
+    await prisma.messages.updateMany({
       where: {
         id: { in: unreadMessages },
       },
