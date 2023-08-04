@@ -37,7 +37,7 @@ const reducer: Reducer<UserState, UserActions> = (state, action: UserActions) =>
         contactsPage: !state.contactsPage,
       }
     case ReducersCases.CHANGE_CURRENT_CHAT_USER:
-      console.log('currentChatUser', state, state.currentChatUser)
+      console.log('currentChatUser', state.currentChatUser)
       return {
         ...state,
         currentChatUser: action.user

@@ -47,16 +47,19 @@ function Main() {
       }
     }
   });
-  console.log(currentChatUser,'current User');
+  console.log(currentChatUser, "current User");
   useEffect(() => {
     const getMessages = async () => {
       const { data: messages } = await axios.get(
-        `${GET_MESSAGES_ROUTE}/${userInfo?.id}/${currentChatUser?.id}`
+        `${GET_MESSAGES_ROUTE}/${1??userInfo}/${currentChatUser?.id}`
       );
+      
       console.log("isThis messages string?", typeof messages, messages);
       dispatch({ type: ReducersCases.SET_MESSAGES, messages });
     };
-    if (currentChatUser?.id) {
+     console.log(`${GET_MESSAGES_ROUTE}/${userInfo?.id}/${currentChatUser?.id}`);
+    console.log(currentChatUser?.id,'current user id the run the getMessage')
+    if (currentChatUser?.id ) {
       getMessages();
     }
     console.log("useEffect getMessages triggered");
