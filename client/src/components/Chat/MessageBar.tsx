@@ -17,8 +17,8 @@ function MessageBar() {
   const sendMessage = async () => {
     try {
       const { data } = await axios.post(ADD_MESSAGE_ROUTE, {
-        to: currentChatUser?.id ?? 1,
-        from: userInfo?.id ?? 3,
+        to: 1 ?? currentChatUser?.id,
+        from: 3 ?? userInfo?.id,
         message,
       });
       console.log(data, "data recieved after sending msg");

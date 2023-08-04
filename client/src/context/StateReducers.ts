@@ -11,7 +11,7 @@ export const initialState: UserState = {
   newUser: null,
   contactsPage: false,
   currentChatUser: undefined,
-  messages: [""],
+  messages: [],
 };
 
 type Reducer<S, A> = (state: S, action: A) => S;

@@ -9,7 +9,7 @@ export enum ReducersCases {
 }
 
 export type IUserProfile = {
-    id?: string
+    id?: number
     name: string | null
     email: string | null | undefined
     profilePicture: string | null
@@ -40,7 +40,7 @@ export type UserActions =
     |
     {
         type: ReducersCases.SET_MESSAGES,
-        messages: string[] 
+        messages: IMessage[]
     };
 
 export interface UserState {
@@ -48,11 +48,21 @@ export interface UserState {
     newUser: boolean | undefined | null
     contactsPage: boolean | undefined | null
     currentChatUser: IUserProfile | null | undefined
-    messages: string[] | undefined | null
+    messages: IMessage[] | undefined | null
 }
 
 export interface IStateProvider {
     initialState: UserState
     reducer: Reducer<UserState, UserActions>
     children: ReactNode
+}
+
+export type IMessage = {
+    id: string
+    type: "text" | "file"
+    message: string
+    recieverId: number
+    senderId: number
+    messageStatus: "sent" | "delivered"
+    sender: number
 }
