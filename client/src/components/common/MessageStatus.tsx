@@ -1,7 +1,11 @@
 import React from "react";
 import { BsCheck, BsCheckAll } from "react-icons/bs";
 
-function MessageStatus({ messageStatus }) {
+function MessageStatus({
+  messageStatus,
+}: {
+  messageStatus: "sent" | "delivered" | "read";
+}) {
   return (
     <>
       {messageStatus === "sent" && <BsCheck className="text-lg" />}

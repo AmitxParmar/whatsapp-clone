@@ -47,6 +47,9 @@ function Main() {
       }
     }
   });
+  useEffect(() => {
+    
+  },[])
   console.log(currentChatUser, "current User");
   useEffect(() => {
     const getMessages = async () => {
