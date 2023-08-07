@@ -2,12 +2,7 @@ import { IUserProfile, UserState } from "@/types/types";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    userInfo: {
-        name: "",
-        email: "",
-        profilePicture: "",
-        about: "",
-    },
+    userInfo: null,
     newUser: null,
     contactsPage: false,
     currentChatUser: null,

@@ -1,5 +1,4 @@
-import { useStateProvider } from "@/context/StateContext";
-import { ReducersCases, IUserProfile } from "@/types/types";
+import {  IUserProfile } from "@/types/types";
 import { GET_ALL_CONTACTS } from "@/utils/ApiRoutes";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -9,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { setContactPage } from "@/store/reducers/mainSlice";
 
 function ContactsList() {
-  /* const { dispatch } = useStateProvider(); */
+  
   const dispatch = useDispatch();
   const [allContacts, setAllContacts] = useState([]);
 

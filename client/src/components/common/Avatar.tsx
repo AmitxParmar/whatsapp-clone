@@ -86,12 +86,12 @@ const Avatar: React.FC<IAvatar> = ({ type, image, setImage }) => {
     const reader = new FileReader();
     const data = document.createElement("img");
     reader.onload = function (event: ProgressEvent<FileReader>) {
-      data.src = event.target?.result as string;
+      data.src = event?.target?.result as string;
       data.setAttribute("data-src", event?.target?.result as string);
     };
     reader.readAsDataURL(file);
     setTimeout(() => {
-      setImage?.(data.src);
+      setImage?.(data?.src);
     }, 100);
   };
 
@@ -100,12 +100,17 @@ const Avatar: React.FC<IAvatar> = ({ type, image, setImage }) => {
       <div className="flex items-center justify-center">
         {type === "sm" && (
           <div className="relative h-10 w-10">
-            <Image src={image} alt="avatar" className="rounded-full" fill />
+            <Image
+              src={image ? image : "/default_avatar.png"}
+              alt="avatar"
+              className="rounded-full"
+              fill
+            />
           </div>
         )}
         {type === "lg" && (
           <div className="relative h-14 w-14">
-            <Image src={image} alt="avatar" className="rounded-full" fill />
+            <Image src={image? image : "/default_avatar.png"} alt="avatar" className="rounded-full" fill />
           </div>
         )}
         {type === "xl" && (

@@ -20,7 +20,7 @@ const ChatListItem = ({ isContactPage = false, data }: IChatListItem) => {
 
   const handleContactClick = () => {
     console.log("handleContactClick");
-    if (currentChatUser?.id === data?.id) {
+    if (!(currentChatUser?.id === data?.id)) {
       console.log(data, "currentUser state, ChatLisetitem");
 
       dispatch(changeCurrentChatUser(data));

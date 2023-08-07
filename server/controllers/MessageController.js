@@ -70,7 +70,7 @@ export const getMessage = async (req, res, next) => {
       },
     });
 
-    res.status(200).json({ messages });
+    res.status(200).json(messages);
   } catch (err) {
     next(err);
   }
