@@ -1,6 +1,7 @@
 import Avatar from "@/components/common/Avatar";
 import Input from "@/components/common/Input";
 import { useStateProvider } from "@/context/StateContext";
+import { setNewUser, setUserInfo } from "@/store/reducers/mainSlice";
 import { ReducersCases } from "@/types/types";
 import { ONBOARD_USER_ROUTE } from "@/utils/ApiRoutes";
 import axios from "axios";
@@ -8,28 +9,27 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 function onboarding() {
   const router = useRouter();
 
-  const { state, dispatch } = useStateProvider();
+  /* const { state, dispatch } = useStateProvider(); */
+  const dispatch = useDispatch();
+  const { userInfo, newUser } = useSelector((state) => state.main);
 
   const [name, setName] = useState<string>("");
   const [about, setAbout] = useState<string>("");
   const [image, setImage] = useState<string>("/default_avatar.png");
-
-  const { userInfo, newUser } = state;
-  
 
   useEffect(() => {
     if (!newUser && !userInfo?.email) router.push("/login");
     else if (!newUser && userInfo?.email) router.push("/");
   }, [newUser, userInfo, router]);
 
-  
   const onboardUserHandler = async () => {
     if (validateDetails()) {
-      const email = state?.userInfo?.email;
+      const email = userInfo?.email;
       console.log(email, "email");
       try {
         const { data } = await axios.post(ONBOARD_USER_ROUTE, {
@@ -38,20 +38,12 @@ function onboarding() {
           about,
           image,
         });
-        console.log(data)
+        console.log(data);
         if (data.status) {
           console.time("before dispatch");
-          dispatch({ type: ReducersCases.SET_NEW_USER, newUser: true });
-          dispatch({
-            type: ReducersCases.SET_USER_INFO,
-            userInfo: {
-              name,
-              email,
-              profilePicture: image,
-              status: "Available",
-            },
-          });
-          console.time("after dispatch")
+          dispatch(setNewUser(true));
+          dispatch(setUserInfo(userInfo));
+          console.time("after dispatch");
           router.push("/");
         }
       } catch (err) {

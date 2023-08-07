@@ -10,14 +10,19 @@ import { useStateProvider } from "@/context/StateContext";
 import { auth } from "@/utils/FirebaseConfig";
 import { ReducersCases } from "@/types/types";
 import { CHECK_USER_ROUTE } from "@/utils/ApiRoutes";
+import { useDispatch, useSelector } from "react-redux";
+import { setNewUser, setUserInfo } from "@/store/reducers/mainSlice";
 
 function login() {
   const router = useRouter();
 
-  const {
+  /* const {
     state: { userInfo, newUser },
     dispatch,
-  } = useStateProvider();
+  } = useStateProvider(); */
+  const dispatch = useDispatch();
+  const userInfo = useSelector((state) => state.main.userInfo);
+  const newUser = useSelector((state) => state.main.newUser);
 
   useEffect(() => {
     console.log({ userInfo, newUser }, "User,newuserBoolean");
@@ -38,23 +43,14 @@ function login() {
         if (!data.status) {
           console.log(data, data.status, "server status check");
           console.log();
-          dispatch({ type: ReducersCases.SET_NEW_USER, newUser: true });
+          dispatch(setNewUser(true));
           console.log("dispatch check ", {
             ReducersCases,
             name,
             email,
             profilePicture,
           });
-          dispatch({
-            type: ReducersCases.SET_USER_INFO,
-            userInfo: {
-              name,
-              email,
-              profilePicture,
-              about: "Available",
-            },
-          });
-
+          dispatch(setUserInfo(userInfo));
           router.push("/onboarding");
         }
       }

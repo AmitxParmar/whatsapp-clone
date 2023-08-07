@@ -5,9 +5,12 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BiArrowBack, BiSearchAlt2 } from "react-icons/bi";
 import ChatListItem from "./ChatListItem";
+import { useDispatch } from "react-redux";
+import { setContactPage } from "@/store/reducers/mainSlice";
 
 function ContactsList() {
-  const { dispatch } = useStateProvider();
+  /* const { dispatch } = useStateProvider(); */
+  const dispatch = useDispatch();
   const [allContacts, setAllContacts] = useState([]);
 
   useEffect(() => {
@@ -29,9 +32,7 @@ function ContactsList() {
     <div className="h-full flex flex-col">
       <div className="h-24 flex items-end px-3 py-4">
         <div className="flex items-center gap-12 text-white">
-          <BiArrowBack
-            onClick={() => dispatch({ type: ReducersCases.SET_CONTACT_PAGE })}
-          />
+          <BiArrowBack onClick={() => dispatch(setContactPage())} />
           <span>New Chat</span>
         </div>
       </div>

@@ -16,11 +16,11 @@ export const initialState: UserState = {
 
 type Reducer<S, A> = (state: S, action: A) => S;
 
-const reducer: Reducer<UserState, UserActions> = (state, action: UserActions) => {
+const reducer: Reducer<UserState, UserActions> = (state, action) => {
   switch (action.type) {
     case ReducersCases.SET_USER_INFO:
       localStorage.setItem('userInfo', JSON.stringify(action.userInfo))
-      console.log('from reducer saved userInfo firebase!!', action.userInfo);
+      
       return {
         ...state,
         userInfo: action.userInfo ?? localStorage.getItem('userInfo'),

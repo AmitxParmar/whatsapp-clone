@@ -2,11 +2,15 @@ import { useStateProvider } from "@/context/StateContext";
 import { calculateTime } from "@/utils/CalculateTime";
 import React from "react";
 import MessageStatus from "../common/MessageStatus";
+import { useSelector } from "react-redux";
 
 function ChatContainer() {
-  const {
+  /* const {
     state: { currentChatUser, userInfo },
-  } = useStateProvider();
+  } = useStateProvider(); */
+  const currentChatUser = useSelector((state) => state.main.currentChatUser);
+  const userInfo = useSelector((state) => state.main.userInfo);
+  
   const messages = [
     {
       id: "string1",

@@ -44,7 +44,7 @@ export type UserActions =
     };
 
 export interface UserState {
-    userInfo: IUserProfile
+    userInfo: IUserProfile | null
     newUser: boolean | undefined | null
     contactsPage: boolean | undefined | null
     currentChatUser: IUserProfile | null | undefined

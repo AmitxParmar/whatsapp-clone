@@ -6,11 +6,13 @@ import List from "./List";
 import ContactsList from "./ContactsList";
 
 import { useStateProvider } from "@/context/StateContext";
+import { useSelector } from "react-redux";
 
 function ChatList() {
-  const {
+  /* const {
     state: { contactsPage },
-  } = useStateProvider();
+  } = useStateProvider(); */
+  const contactsPage = useSelector((state) => state.main.contactsPage);
   const [pageType, setPageType] = useState("default");
 
   useEffect(() => {
@@ -26,9 +28,7 @@ function ChatList() {
           <List />
         </>
       )}
-      {
-        pageType === "all-contacts" && <ContactsList/>
-      }
+      {pageType === "all-contacts" && <ContactsList />}
     </div>
   );
 }

@@ -6,12 +6,17 @@ import { BsEmojiSmile } from "react-icons/bs";
 import { FaMicrophone } from "react-icons/fa";
 import { ImAttachment } from "react-icons/im";
 import { MdSend } from "react-icons/md";
+import { useSelector } from "react-redux";
 
 function MessageBar() {
-  const {
+  /* const {
     state: { userInfo, currentChatUser },
     dispatch,
-  } = useStateProvider();
+  } = useStateProvider(); */
+  
+  const userInfo = useSelector((state) => state.main.userInfo);
+  const currentChatUser = useSelector((state) => state.main.currentChatUser);
+
   const [message, setMessage] = useState("");
 
   const sendMessage = async () => {

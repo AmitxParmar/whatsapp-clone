@@ -3,15 +3,19 @@ import Avatar from "../common/Avatar";
 import { useStateProvider } from "@/context/StateContext";
 import { BsFillChatLeftTextFill, BsThreeDotsVertical } from "react-icons/bs";
 import { ReducersCases } from "@/types/types";
+import { setContactPage } from "@/store/reducers/mainSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function ChatListHeader() {
-  const {
+  /* const {
     state: { userInfo },
     dispatch,
-  } = useStateProvider();
+  } = useStateProvider(); */
+  const userInfo = useSelector((state) => state.main.userInfo);
+  const dispatch = useDispatch();
 
   const handleAllContactsPage = () => {
-    dispatch({ type: ReducersCases.SET_CONTACT_PAGE });
+    dispatch(setContactPage());
   };
 
   return (
