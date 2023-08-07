@@ -6,27 +6,20 @@ import axios from "axios";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { FcGoogle } from "react-icons/fc";
 
-import { useStateProvider } from "@/context/StateContext";
 import { auth } from "@/utils/FirebaseConfig";
 import { ReducersCases } from "@/types/types";
 import { CHECK_USER_ROUTE } from "@/utils/ApiRoutes";
 import { useDispatch, useSelector } from "react-redux";
 import { setNewUser, setUserInfo } from "@/store/reducers/mainSlice";
+import { RootState } from "@/store/store";
 
 function login() {
   const router = useRouter();
-
-  /* const {
-    state: { userInfo, newUser },
-    dispatch,
-  } = useStateProvider(); */
   const dispatch = useDispatch();
-  const userInfo = useSelector((state) => state.main.userInfo);
-  const newUser = useSelector((state) => state.main.newUser);
+
+  const { userInfo, newUser } = useSelector((state: RootState) => state.main);
 
   useEffect(() => {
-    console.log({ userInfo, newUser }, "User,newuserBoolean");
-
     if (userInfo?.id && !newUser) router.push("/");
   }, [userInfo, newUser]);
 

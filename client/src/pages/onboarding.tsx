@@ -1,22 +1,24 @@
-import Avatar from "@/components/common/Avatar";
-import Input from "@/components/common/Input";
-import { useStateProvider } from "@/context/StateContext";
-import { setNewUser, setUserInfo } from "@/store/reducers/mainSlice";
-import { ReducersCases } from "@/types/types";
-import { ONBOARD_USER_ROUTE } from "@/utils/ApiRoutes";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-
-import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
+import axios from "axios";
+import Avatar from "@/components/common/Avatar";
+import Input from "@/components/common/Input";
+
+import { setNewUser, setUserInfo } from "@/store/reducers/mainSlice";
+
+import { ONBOARD_USER_ROUTE } from "@/utils/ApiRoutes";
+import { RootState } from "@/store/store";
+
 
 function onboarding() {
   const router = useRouter();
 
   /* const { state, dispatch } = useStateProvider(); */
   const dispatch = useDispatch();
-  const { userInfo, newUser } = useSelector((state) => state.main);
+  const { userInfo, newUser } = useSelector((state:RootState) => state.main);
 
   const [name, setName] = useState<string>("");
   const [about, setAbout] = useState<string>("");
@@ -30,7 +32,7 @@ function onboarding() {
   const onboardUserHandler = async () => {
     if (validateDetails()) {
       const email = userInfo?.email;
-      console.log(email, "email");
+
       try {
         const { data } = await axios.post(ONBOARD_USER_ROUTE, {
           email,
@@ -38,12 +40,9 @@ function onboarding() {
           about,
           image,
         });
-        console.log(data);
         if (data.status) {
-          console.time("before dispatch");
           dispatch(setNewUser(true));
           dispatch(setUserInfo(userInfo));
-          console.time("after dispatch");
           router.push("/");
         }
       } catch (err) {

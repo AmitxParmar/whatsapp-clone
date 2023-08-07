@@ -63,6 +63,7 @@ export type IMessage = {
     message: string
     recieverId: number
     senderId: number
-    messageStatus: "sent" | "delivered"
+    messageStatus: "sent" | "delivered" | "read"
     sender: number
+    createdAt: number
 }

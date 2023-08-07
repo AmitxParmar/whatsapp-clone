@@ -1,52 +1,22 @@
-import { useStateProvider } from "@/context/StateContext";
-import { calculateTime } from "@/utils/CalculateTime";
 import React from "react";
-import MessageStatus from "../common/MessageStatus";
 import { useSelector } from "react-redux";
 
+import { RootState } from "@/store/store";
+import { calculateTime } from "@/utils/CalculateTime";
+
+import MessageStatus from "@/components/common/MessageStatus";
+
 function ChatContainer() {
-  /* const {
-    state: { currentChatUser, userInfo },
-  } = useStateProvider(); */
-  const currentChatUser = useSelector((state) => state.main.currentChatUser);
-  const userInfo = useSelector((state) => state.main.userInfo);
-  
-  const messages = [
-    {
-      id: "string1",
-      type: "text",
-      message: "test",
-      recieverId: "1",
-      senderId: 3,
-      messageStatus: "sent",
-      sender: 3,
-      createdAt: "129083012938",
-    },
-    {
-      id: "string2",
-      type: "text",
-      message: "test",
-      recieverId: "1",
-      senderId: 3,
-      messageStatus: "sent",
-      sender: 3,
-      createdAt: "19082471234",
-    },
-  ];
-  /*  const isEven = (index: number): boolean => {
-    const n = Number(index);
-    return n === 0 || !!(n && !(n % 2));
-  }; */
+  const { currentChatUser, userInfo, messages } = useSelector(
+    (state: RootState) => state.main
+  );
 
   return (
     <div className="h-[80vh] relative flex-grow overflow-auto custom-scrollbar">
-      <div className="bg-chat-background bg-fixed h-full w-full opacity-50 left-0 top-0 z-0">
-        <div className="mx-10 my-6 relative bottom-0 z-40"></div>
-        <div className="opacity-100 flex w-full">
+      <div className="bg-chat-background  bg-fixed h-full w-full opacity-5 left-0 top-0 z-0">
+        <div className=" mx-10 my-6 relative bottom-0 z-40"></div>
+        <div className="flex w-full">
           <div className="flex flex-col justify-end w-full gap-1 overflow-auto">
-            {/* <span className="text-white">asdasd</span>
-            <span className="text-white">asdasd</span> */}
-            {void console.log(messages, "messages")}
             {messages?.map((message, index) => (
               <div
                 key={message.id}
@@ -56,7 +26,7 @@ function ChatContainer() {
                     : " justify-end"
                 }`}
               >
-                {void console.log(message, "message")}
+                
                 {message.type === "text" && (
                   <div
                     className={`text-white px-2 py-[5px] text-sm rounded-md flex gap-2 items-end max-w-[45%] ${
@@ -71,7 +41,7 @@ function ChatContainer() {
                         {calculateTime(message.createdAt)}
                       </span>
                       <span>
-                        {message.senderId === userInfo.id && (
+                        {message.senderId === userInfo?.id && (
                           <MessageStatus
                             messageStatus={message.messageStatus}
                           />

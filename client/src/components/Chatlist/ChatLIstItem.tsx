@@ -1,12 +1,13 @@
 import { IUserProfile, ReducersCases } from "@/types/types";
 import React from "react";
 import Avatar from "../common/Avatar";
-import { useStateProvider } from "@/context/StateContext";
-import { useDispatch } from "react-redux";
+
+import { useDispatch, useSelector } from "react-redux";
 import {
   changeCurrentChatUser,
   setContactPage,
 } from "@/store/reducers/mainSlice";
+import { RootState } from "@/store/store";
 
 interface IChatListItem {
   isContactPage: boolean;
@@ -14,21 +15,18 @@ interface IChatListItem {
 }
 
 const ChatListItem = ({ isContactPage = false, data }: IChatListItem) => {
-  /*  const {
-    state: { userInfo, currentChatUser },
-    dispatch,
-  } = useStateProvider(); */
   const dispatch = useDispatch();
+  const { currentChatUser } = useSelector((state: RootState) => state.main);
 
   const handleContactClick = () => {
     console.log("handleContactClick");
-    /* if (currentChatUser?.id === data?.id) { */
-    console.log(data, "currentUser state, ChatLisetitem");
+    if (currentChatUser?.id === data?.id) {
+      console.log(data, "currentUser state, ChatLisetitem");
 
-    dispatch(changeCurrentChatUser(data));
+      dispatch(changeCurrentChatUser(data));
 
-    dispatch(setContactPage());
-    /* } */
+      dispatch(setContactPage());
+    }
   };
 
   return (

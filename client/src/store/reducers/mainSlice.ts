@@ -11,14 +11,14 @@ const initialState = {
     newUser: null,
     contactsPage: false,
     currentChatUser: null,
-    messages: [],
+    messages: null,
 } as UserState;
 
 const mainSlice = createSlice({
     name: "main",
     initialState,
     reducers: {
-        setUserInfo: (state, action: PayloadAction<IUserProfile>) => {
+        setUserInfo: (state, action: PayloadAction<IUserProfile | null>) => {
             state.userInfo = action.payload
             /*  if (action.payload) {
                  localStorage.setItem("userInfo", JSON.stringify(action.payload));

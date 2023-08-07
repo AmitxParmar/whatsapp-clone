@@ -9,27 +9,20 @@ import Empty from "./Empty";
 import { auth } from "@/utils/FirebaseConfig";
 import { CHECK_USER_ROUTE, GET_MESSAGES_ROUTE } from "@/utils/ApiRoutes";
 
-import { useStateProvider } from "@/context/StateContext";
 import Chat from "./Chat/Chat";
 
 import { useDispatch, useSelector } from "react-redux";
 import { setMessages, setUserInfo } from "@/store/reducers/mainSlice";
 import type { AppDispatch, RootState } from "@/store/store";
-import { IUserProfile } from "@/types/types";
+import { IMessage } from "@/types/types";
 
 function Main() {
   const router = useRouter();
-  const currentChatUser = useSelector<RootState>(
-    (state) => state.main.currentChatUser
-  );
-  const userInfo = useSelector<RootState>(
-    (state) => state.main.userInfo as IUserProfile
+
+  const { userInfo, currentChatUser } = useSelector(
+    (state: RootState) => state.main
   );
 
-  /* const {
-    state: { userInfo, currentChatUser },
-    dispatch,
-  } = useStateProvider(); */
   const dispatch = useDispatch<AppDispatch>();
 
   const [redirectLogin, setRedirectLogin] = useState<boolean>(false);
@@ -62,19 +55,21 @@ function Main() {
     }
   });
   useEffect(() => {}, []);
-  console.log(currentChatUser, "current User");
+
   useEffect(() => {
     const getMessages = async () => {
-      const { data: messages } = await axios.get(
+      const { data: messages } = await axios.get<IMessage[]>(
         `${GET_MESSAGES_ROUTE}/${userInfo?.id}/${currentChatUser?.id}`
       );
 
-      console.log("isThis messages string?", typeof messages, messages);
       dispatch(setMessages(messages));
     };
     console.log(`${GET_MESSAGES_ROUTE}/${userInfo?.id}/${currentChatUser?.id}`);
-    console.log(currentChatUser?.id, "current user id the run the getMessage");
-    if (currentChatUser?.id) {
+    console.log(
+      currentChatUser?.id && userInfo?.id,
+      "current user id the run the getMessage"
+    );
+    if (currentChatUser?.id && userInfo?.id) {
       getMessages();
     }
     console.log("useEffect getMessages triggered");

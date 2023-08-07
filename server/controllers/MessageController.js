@@ -37,11 +37,11 @@ export const getMessage = async (req, res, next) => {
         OR: [
           {
             senderId: parseInt(from),
-            receiverId: parseInt(to),
+            recieverId: parseInt(to),
           },
           {
             senderId: parseInt(to),
-            receiverId: parseInt(from),
+            recieverId: parseInt(from),
           },
         ],
       },
@@ -66,10 +66,12 @@ export const getMessage = async (req, res, next) => {
         id: { in: unreadMessages },
       },
       data: {
-        messageStstaus: "read",
+        messageStatus: "read",
       },
     });
 
     res.status(200).json({ messages });
-  } catch (err) {}
+  } catch (err) {
+    next(err);
+  }
 };

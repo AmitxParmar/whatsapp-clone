@@ -1,17 +1,18 @@
 import React from "react";
-import Avatar from "../common/Avatar";
+import { useSelector } from "react-redux";
+
+import Avatar from "@/components/common/Avatar";
+
 import { MdCall } from "react-icons/md";
 import { IoVideocam } from "react-icons/io5";
 import { BiSearchAlt2 } from "react-icons/bi";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { useStateProvider } from "@/context/StateContext";
-import { useSelector } from "react-redux";
+
+import { RootState } from "@/store/store";
 
 function ChatHeader() {
-  /* const {
-    state: { currentChatUser },
-  } = useStateProvider(); */
-  const currentChatUser = useSelector((state) => state.main.currentChatUser);
+  
+  const currentChatUser = useSelector((state:RootState) => state.main.currentChatUser);
 
   return (
     <div className="h-16 px-4 py-3 flex justify-between items-center bg-panel-header-background z-10">
