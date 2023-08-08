@@ -1,7 +1,5 @@
-import React, {
-  useEffect,
-  type SyntheticEvent,
-} from "react";
+import React, { useEffect, type MouseEvent } from "react";
+import OutsideClick from "../OutsideClickHandler";
 
 type Cordinates = {
   x: number;
@@ -28,12 +26,12 @@ const ContextMenu: React.FC<IContextMenu> = ({
 }) => {
   const contextMenuRef = React.useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    const handleOutsideClick = (event) => {
-      if (event.target.id !== "context-opener") {
+  /*   useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent): void => {
+      if (event.currentTarget.id !== "context-opener") {
         if (
           contextMenuRef.current &&
-          contextMenuRef.current.contains(event.target)
+          contextMenuRef.current.contains(event.currentTarget)
         ) {
           setContextMenu(false);
         }
@@ -43,34 +41,37 @@ const ContextMenu: React.FC<IContextMenu> = ({
     return () => {
       document.removeEventListener("click", handleOutsideClick);
     };
-  }, []);
-  const handleClick = (e: SyntheticEvent, callback: () => void) => {
+  }, []); */
+
+  const handleClick = (e: MouseEvent, callback: () => void) => {
     e.stopPropagation();
     setContextMenu(false);
     callback();
   };
 
   return (
-    <div
-      className={`bg-dropdown-background fixed py-2 z-[100] shadow-xl`}
-      ref={contextMenuRef}
-      style={{
-        top: cordinates.y,
-        left: cordinates.x,
-      }}
-    >
-      <ul>
-        {options.map(({ name, callback }) => (
-          <li
-            key={name}
-            onClick={(e) => handleClick(e, callback)}
-            className="px-5 py-2 cursor-pointer hover:bg-background-default-hover"
-          >
-            <span className="text-white">{name}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <OutsideClick onOutsideClick={handleClick}>
+      <div
+        className={`bg-dropdown-background fixed py-2 z-[100] shadow-xl`}
+        ref={contextMenuRef}
+        style={{
+          top: cordinates.y,
+          left: cordinates.x,
+        }}
+      >
+        <ul>
+          {options.map(({ name, callback }) => (
+            <li
+              key={name}
+              onClick={(e) => handleClick(e, callback)}
+              className="px-5 py-2 cursor-pointer hover:bg-background-default-hover"
+            >
+              <span className="text-white">{name}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </OutsideClick>
   );
 };
 

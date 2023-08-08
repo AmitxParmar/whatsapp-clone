@@ -1,12 +1,10 @@
-import { IUserProfile, ReducersCases } from "@/types/types";
 import React from "react";
 import Avatar from "../common/Avatar";
 
 import { useDispatch, useSelector } from "react-redux";
-import {
-  changeCurrentChatUser,
-  setContactPage,
-} from "@/store/reducers/mainSlice";
+
+import { changeCurrentChatUser } from "@/store/reducers/chatSlice";
+import { setContactPage } from "@/store/reducers/userSlice";
 import { RootState } from "@/store/store";
 
 interface IChatListItem {
@@ -16,15 +14,12 @@ interface IChatListItem {
 
 const ChatListItem = ({ isContactPage = false, data }: IChatListItem) => {
   const dispatch = useDispatch();
-  const { currentChatUser } = useSelector((state: RootState) => state.main);
+  const { userInfo } = useSelector((state: RootState) => state.user);
 
   const handleContactClick = () => {
-    console.log("handleContactClick");
-    if (!(currentChatUser?.id === data?.id)) {
-      console.log(data, "currentUser state, ChatLisetitem");
-
+    if (userInfo?.id !== data.id) {
       dispatch(changeCurrentChatUser(data));
-
+      console.log("the active user cant click");
       dispatch(setContactPage());
     }
   };

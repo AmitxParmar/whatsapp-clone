@@ -12,22 +12,21 @@ import {
 } from '@reduxjs/toolkit';
 import storage from './storage';
 
-import mainSlice from './reducers/mainSlice';
-import type { ThunkAction, Action } from "@reduxjs/toolkit"
-import { UserState } from '@/types/types';
+import userReducers from './reducers/userSlice';
+import chatReducers from './reducers/chatSlice';
 
 const persistConfig = {
     key: 'root',
     version: 1,
     storage,
-    
 }
 
-const persistedReducer = persistReducer(persistConfig, mainSlice)
+const persistedReducer = persistReducer(persistConfig, userReducers)
 
 export const store = configureStore({
     reducer: {
-        main: persistedReducer
+        user: persistedReducer,
+        chat: chatReducers,
     },
     devTools: process.env.NODE_ENV !== 'production',
     middleware: (getDefaultMiddleware) =>
@@ -43,9 +42,9 @@ export const persistor = persistStore(store)
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
-export type AppThunk<ReturnType = void> = ThunkAction<
+/* export type AppThunk<ReturnType = void> = ThunkAction<
     ReturnType,
     RootState,
     unknown,
     Action<UserState>
-> 
+>  */

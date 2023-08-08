@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 import ChatListHeader from "./ChatListHeader";
 import SearchBar from "./SearchBar";
 import List from "./List";
 import ContactsList from "./ContactsList";
-
-import { useStateProvider } from "@/context/StateContext";
-import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 function ChatList() {
-  /* const {
-    state: { contactsPage },
-  } = useStateProvider(); */
-  const contactsPage = useSelector((state) => state.main.contactsPage);
+  const contactsPage = useSelector(
+    (state: RootState) => state.user.contactsPage
+  );
   const [pageType, setPageType] = useState("default");
 
   useEffect(() => {

@@ -7,18 +7,17 @@ import axios from "axios";
 import Avatar from "@/components/common/Avatar";
 import Input from "@/components/common/Input";
 
-import { setNewUser, setUserInfo } from "@/store/reducers/mainSlice";
+import { setNewUser, setUserInfo } from "@/store/reducers/userSlice";
 
 import { ONBOARD_USER_ROUTE } from "@/utils/ApiRoutes";
 import { RootState } from "@/store/store";
-
 
 function onboarding() {
   const router = useRouter();
 
   /* const { state, dispatch } = useStateProvider(); */
   const dispatch = useDispatch();
-  const { userInfo, newUser } = useSelector((state:RootState) => state.main);
+  const { userInfo, newUser } = useSelector((state: RootState) => state.user);
 
   const [name, setName] = useState<string>("");
   const [about, setAbout] = useState<string>("");
@@ -32,7 +31,6 @@ function onboarding() {
   const onboardUserHandler = async () => {
     if (validateDetails()) {
       const email = userInfo?.email;
-
       try {
         const { data } = await axios.post(ONBOARD_USER_ROUTE, {
           email,
@@ -41,8 +39,16 @@ function onboarding() {
           image,
         });
         if (data.status) {
-          dispatch(setNewUser(true));
-          dispatch(setUserInfo(userInfo));
+          dispatch(setNewUser(false));
+          dispatch(
+            setUserInfo({
+              id: data.id,
+              name,
+              email,
+              about,
+              profilePicture: image,
+            })
+          );
           router.push("/");
         }
       } catch (err) {

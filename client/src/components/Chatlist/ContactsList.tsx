@@ -1,14 +1,14 @@
-import {  IUserProfile } from "@/types/types";
-import { GET_ALL_CONTACTS } from "@/utils/ApiRoutes";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { BiArrowBack, BiSearchAlt2 } from "react-icons/bi";
-import ChatListItem from "./ChatListItem";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setContactPage } from "@/store/reducers/mainSlice";
+import { BiArrowBack, BiSearchAlt2 } from "react-icons/bi";
+
+import { GET_ALL_CONTACTS } from "@/utils/ApiRoutes";
+import { setContactPage } from "@/store/reducers/userSlice";
+
+import ChatListItem from "./ChatListItem";
 
 function ContactsList() {
-  
   const dispatch = useDispatch();
   const [allContacts, setAllContacts] = useState([]);
 

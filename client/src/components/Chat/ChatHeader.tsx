@@ -11,8 +11,9 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { RootState } from "@/store/store";
 
 function ChatHeader() {
-  
-  const currentChatUser = useSelector((state:RootState) => state.main.currentChatUser);
+  const currentChatUser = useSelector(
+    (state: RootState) => state.chat.currentChatUser
+  );
 
   return (
     <div className="h-16 px-4 py-3 flex justify-between items-center bg-panel-header-background z-10">

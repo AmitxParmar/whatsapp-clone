@@ -7,17 +7,16 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { FcGoogle } from "react-icons/fc";
 
 import { auth } from "@/utils/FirebaseConfig";
-import { ReducersCases } from "@/types/types";
 import { CHECK_USER_ROUTE } from "@/utils/ApiRoutes";
 import { useDispatch, useSelector } from "react-redux";
-import { setNewUser, setUserInfo } from "@/store/reducers/mainSlice";
+import { setNewUser, setUserInfo } from "@/store/reducers/userSlice";
 import { RootState } from "@/store/store";
 
 function login() {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const { userInfo, newUser } = useSelector((state: RootState) => state.main);
+  const { userInfo, newUser } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     if (userInfo?.id && !newUser) router.push("/");
@@ -30,21 +29,19 @@ function login() {
     } = await signInWithPopup(auth, provider);
     try {
       if (email) {
-        const { data } = await axios.post(CHECK_USER_ROUTE, { email });
-        console.log(email, "reached email, into dispatch");
-        console.log(data, "data from server,,,");
+        const { data } = await axios.post(CHECK_USER_ROUTE, {
+          email,
+        });
+
         if (!data.status) {
-          console.log(data, data.status, "server status check");
-          console.log();
           dispatch(setNewUser(true));
-          console.log("dispatch check ", {
-            ReducersCases,
-            name,
-            email,
-            profilePicture,
-          });
-          dispatch(setUserInfo(userInfo));
+          dispatch(setUserInfo({ name, email, profilePicture, about: "" }));
           router.push("/onboarding");
+        } else {
+          const { id, name, email, profilePicture, about } =
+            data as IUserProfile;
+          dispatch(setUserInfo({ id, name, email, profilePicture, about }));
+          router.push("/");
         }
       }
     } catch (err) {

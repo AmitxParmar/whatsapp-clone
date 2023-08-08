@@ -1,27 +1,27 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { Socket, io } from "socket.io-client";
+import { useRouter } from "next/router";
 import { onAuthStateChanged } from "firebase/auth";
 
 import ChatList from "./Chatlist/ChatList";
 import Empty from "./Empty";
-
-import { auth } from "@/utils/FirebaseConfig";
-import { CHECK_USER_ROUTE, GET_MESSAGES_ROUTE } from "@/utils/ApiRoutes";
-
 import Chat from "./Chat/Chat";
 
-import { useDispatch, useSelector } from "react-redux";
-import { setMessages, setUserInfo } from "@/store/reducers/mainSlice";
+import { auth } from "@/utils/FirebaseConfig";
+import { CHECK_USER_ROUTE, GET_MESSAGES_ROUTE, HOST } from "@/utils/ApiRoutes";
+import { setUserInfo } from "@/store/reducers/userSlice";
+import { setMessages, setSocket, addMessage } from "@/store/reducers/chatSlice";
 import type { AppDispatch, RootState } from "@/store/store";
-import { IMessage } from "@/types/types";
 
 function Main() {
+  const socket = useRef<Socket | null>(null);
   const router = useRouter();
+  const [socketEvent, setSocketEvent] = useState(false);
 
-  const { userInfo, currentChatUser } = useSelector(
-    (state: RootState) => state.main
-  );
+  const { userInfo } = useSelector((state: RootState) => state.user);
+  const { currentChatUser } = useSelector((state: RootState) => state.chat);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -41,27 +41,34 @@ function Main() {
         router.push("/login");
       }
       if (data?.data) {
-        const { id, name, email, profilePicture, about } = data.data;
-        dispatch(
-          setUserInfo({
-            id,
-            name,
-            email,
-            profilePicture,
-            about,
-          })
-        );
+        dispatch(setUserInfo(data.data));
       }
     }
   });
-  useEffect(() => {}, []);
+
+  useEffect(() => {
+    if (userInfo) {
+      socket.current = io(HOST);
+      socket.current.emit("add-user", userInfo.id);
+      dispatch(setSocket(socket.current));
+      console.log(socket, "socket for types");
+    }
+  }, [userInfo]);
+
+  useEffect(() => {
+    if (socket.current && !socketEvent) {
+      socket.current.on("msg-recieve", (data) => {
+        dispatch(addMessage({ ...data.message }));
+      });
+      setSocketEvent(true);
+    }
+  }, [socket.current]);
 
   useEffect(() => {
     const getMessages = async () => {
       const { data: messages } = await axios.get<IMessage[]>(
         `${GET_MESSAGES_ROUTE}/${userInfo?.id}/${currentChatUser?.id}`
       );
-
       dispatch(setMessages(messages));
     };
     console.log(`${GET_MESSAGES_ROUTE}/${userInfo?.id}/${currentChatUser?.id}`);
@@ -78,6 +85,7 @@ function Main() {
   return (
     <div className="grid grid-cols-main h-screen w-screen max-h-screen max-w-full overflow-hidden">
       <ChatList />
+      {void console.log("currentChatList", currentChatUser)}
       {currentChatUser ? <Chat /> : <Empty />}
     </div>
   );

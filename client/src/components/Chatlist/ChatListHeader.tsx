@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { BsFillChatLeftTextFill, BsThreeDotsVertical } from "react-icons/bs";
 
-import { setContactPage } from "@/store/reducers/mainSlice";
+import { setContactPage } from "@/store/reducers/userSlice";
 import { RootState } from "@/store/store";
 
 function ChatListHeader() {
-  const userInfo = useSelector((state: RootState) => state.main.userInfo);
+  const userInfo = useSelector((state: RootState) => state.user.userInfo);
   const dispatch = useDispatch();
 
   const handleAllContactsPage = () => {

@@ -1,32 +1,59 @@
-import { useStateProvider } from "@/context/StateContext";
-import { ADD_MESSAGE_ROUTE } from "@/utils/ApiRoutes";
 import axios from "axios";
-import React, { useState } from "react";
+import React, {
+  MouseEvent,
+  SyntheticEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { useSelector } from "react-redux";
+import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
+import { RootState } from "@/store/store";
+import { ADD_MESSAGE_ROUTE } from "@/utils/ApiRoutes";
 import { BsEmojiSmile } from "react-icons/bs";
 import { FaMicrophone } from "react-icons/fa";
 import { ImAttachment } from "react-icons/im";
 import { MdSend } from "react-icons/md";
-import { useSelector } from "react-redux";
-
+import type { Socket } from "socket.io-client";
+import OutsideClick from "../OutsideClickHandler";
 function MessageBar() {
-  /* const {
-    state: { userInfo, currentChatUser },
-    dispatch,
-  } = useStateProvider(); */
-  
-  const userInfo = useSelector((state) => state.main.userInfo);
-  const currentChatUser = useSelector((state) => state.main.currentChatUser);
-
   const [message, setMessage] = useState("");
+  const [showEmojiPicker, setEmojiPicker] = useState(false);
+  const emojiPickerRef = useRef<HTMLDivElement | null>(null);
+
+  /* useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent<HTMLDivElement>) => {
+      if (event.currentTarget.id !== "emoji-open") {
+      }
+    };
+  }, []); */
+
+  const handleEmojiModal = (): void => setEmojiPicker(!showEmojiPicker);
+  const handleEmojiClick = (emoji: EmojiClickData) => {
+    setMessage((prevMsg) => (prevMsg += emoji.emoji));
+  };
+
+  const { userInfo } = useSelector((state: RootState) => state.user);
+  const { currentChatUser, socket } = useSelector(
+    (state: RootState) => state.chat
+  );
+
+  const isValid = message === "";
 
   const sendMessage = async () => {
+    if (isValid) return console.log("message is empty");
     try {
       const { data } = await axios.post(ADD_MESSAGE_ROUTE, {
-        to: 1 ?? currentChatUser?.id,
-        from: 3 ?? userInfo?.id,
+        to: currentChatUser?.id,
+        from: userInfo?.id,
         message,
       });
-      console.log(data, "data recieved after sending msg");
+      (socket as Socket).emit("send-msg", {
+        to: currentChatUser?.id,
+        from: userInfo?.id,
+        message: data.message,
+      });
+
       setMessage("");
     } catch (err) {
       console.log(err);
@@ -40,7 +67,19 @@ function MessageBar() {
           <BsEmojiSmile
             className="text-panel-header-icon cursor-pointer text-xl"
             title="Emoji"
+            id="emoji-open"
+            onClick={handleEmojiModal}
           />
+          {showEmojiPicker && (
+            <OutsideClick onOutsideClick={handleEmojiModal}>
+              <div
+                className="absolute bottom-24 left-16 z-40"
+                ref={emojiPickerRef}
+              >
+                <EmojiPicker onEmojiClick={handleEmojiClick} />
+              </div>
+            </OutsideClick>
+          )}
           <ImAttachment
             className="text-panel-header-icon cursor-pointer text-xl"
             title="Attach File"
@@ -56,7 +95,7 @@ function MessageBar() {
           />
         </div>
         <div className="flex w-10 items-center justify-center">
-          <button>
+          <button className={`${isValid ? "opacity-20" : null}`}>
             <MdSend
               className="text-panel-header-icon cursor-pointer text-xl"
               title="Send message"
