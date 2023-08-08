@@ -1,14 +1,9 @@
 import axios from "axios";
-import React, {
-  ChangeEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { useSelector } from "react-redux";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 import { RootState } from "@/store/store";
-import { ADD_MESSAGE_ROUTE } from "@/utils/ApiRoutes";
+import { ADD_IMAGE_MESSAGE_ROUTE, ADD_MESSAGE_ROUTE } from "@/utils/ApiRoutes";
 import { BsEmojiSmile } from "react-icons/bs";
 import { FaMicrophone } from "react-icons/fa";
 import { ImAttachment } from "react-icons/im";
@@ -16,6 +11,7 @@ import { MdSend } from "react-icons/md";
 import type { Socket } from "socket.io-client";
 import OutsideClick from "../OutsideClickHandler";
 import PhotoPicker from "../common/PhotoPicker";
+import { addMessage, setMessages } from "@/store/reducers/chatSlice";
 function MessageBar() {
   const [message, setMessage] = useState("");
   const [showEmojiPicker, setEmojiPicker] = useState(false);
@@ -33,23 +29,25 @@ function MessageBar() {
   const { currentChatUser, socket } = useSelector(
     (state: RootState) => state.chat
   );
+  const dispatch = useDispatch();
 
   const isValid = message === "";
 
   const sendMessage = async () => {
     if (isValid) return console.log("message is empty");
     try {
-      const { data } = await axios.post(ADD_MESSAGE_ROUTE, {
+      const { data } = await axios.post<IMessage>(ADD_MESSAGE_ROUTE, {
         to: currentChatUser?.id,
         from: userInfo?.id,
         message,
       });
-      (socket as Socket).emit("send-msg", {
+      console.log(data, "what does post message returns?? make type outofit");
+      socket.emit("send-msg", {
         to: currentChatUser?.id,
         from: userInfo?.id,
         message: data.message,
       });
-
+      dispatch(addMessage({ ...data }));
       setMessage("");
     } catch (err) {
       console.log(err);
@@ -57,17 +55,25 @@ function MessageBar() {
   };
 
   const photoPickerChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] as File;
-    const reader = new FileReader();
-    const data = document.createElement("img");
-    reader.onload = function (event: ProgressEvent<FileReader>) {
-      data.src = event?.target?.result as string;
-      data.setAttribute("data-src", event?.target?.result as string);
-    };
-    reader.readAsDataURL(file);
-    setTimeout(() => {
-      setImage?.(data?.src);
-    }, 100);
+    try {
+      const file = e.target.files?.[0] as Blob;
+      const formData = new FormData();
+      formData.append("image", file);
+      const response = await axios.post(ADD_IMAGE_MESSAGE_ROUTE, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        params: {
+          from: userInfo?.id,
+          to: currentChatUser?.id,
+        },
+      });
+      if (response.status === 201) {
+        dispatch(setMessages({ ...response.data.message }));
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {

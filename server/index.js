@@ -25,15 +25,17 @@ const io = new Server(server, {
 });
 
 global.onlineUsers = new Map();
-io.on("connnection", (socket) => {
+io.on("connection", (socket) => {
   global.chatSocket = socket;
   socket.on("add-user", (userId) => {
     onlineUsers.set(userId, socket.id);
   });
   socket.on("send-msg", (data) => {
     const sendUserSocket = onlineUsers.get(data.to);
+    console.log(sendUserSocket, "sendSocketUser");
     if (sendUserSocket) {
-      socket.to(senduserSocket).emit("msg-receive"),
+      console.log("if working too, meaning response right after receiving it");
+      socket.to(sendUserSocket).emit("msg-recieve"),
         {
           from: data.from,
           message: data.message,

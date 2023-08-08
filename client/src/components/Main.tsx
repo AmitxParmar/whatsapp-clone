@@ -37,10 +37,12 @@ function Main() {
       const { data } = await axios.post(CHECK_USER_ROUTE, {
         email: currentUser.email,
       });
+      console.log(data, "userCheckData main");
       if (!data.status) {
         router.push("/login");
       }
       if (data?.data) {
+        console.log("settttings userINfo testtttttttttt", data.data);
         dispatch(setUserInfo(data.data));
       }
     }
@@ -58,6 +60,7 @@ function Main() {
   useEffect(() => {
     if (socket.current && !socketEvent) {
       socket.current.on("msg-recieve", (data) => {
+        console.log(data, "new message received using socket data");
         dispatch(addMessage({ ...data.message }));
       });
       setSocketEvent(true);

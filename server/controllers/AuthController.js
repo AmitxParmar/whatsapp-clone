@@ -6,7 +6,7 @@ export const checkUser = async (req, res, next) => {
     if (!email) {
       return res.json({ msg: "Email is required.", status: false });
     }
-    console.log(email, "email check");
+    
     const prisma = getPrismaInstance();
 
     const user = await prisma.user.findUnique({ where: { email } });

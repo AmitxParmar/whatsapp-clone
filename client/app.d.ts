@@ -8,12 +8,13 @@ type IUserProfile = {
 
 type IMessage = {
     id: string
-    type: "text" | "file"
+    type: "text" | "file" | "image"
     message: string
     recieverId: number
     senderId: number
     messageStatus: "sent" | "delivered" | "read"
-    sender: number
+    reciever: IUserProfile
+    sender: IUserProfile
     createdAt: number
 }
 
