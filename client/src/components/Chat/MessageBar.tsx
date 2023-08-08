@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, {
-  MouseEvent,
-  SyntheticEvent,
+  ChangeEvent,
   useEffect,
   useRef,
   useState,
@@ -16,17 +15,14 @@ import { ImAttachment } from "react-icons/im";
 import { MdSend } from "react-icons/md";
 import type { Socket } from "socket.io-client";
 import OutsideClick from "../OutsideClickHandler";
+import PhotoPicker from "../common/PhotoPicker";
 function MessageBar() {
   const [message, setMessage] = useState("");
   const [showEmojiPicker, setEmojiPicker] = useState(false);
-  const emojiPickerRef = useRef<HTMLDivElement | null>(null);
+  const [grabPhoto, setGrabPhoto] = useState(false);
+  const [image, setImage] = useState("");
 
-  /* useEffect(() => {
-    const handleOutsideClick = (event: MouseEvent<HTMLDivElement>) => {
-      if (event.currentTarget.id !== "emoji-open") {
-      }
-    };
-  }, []); */
+  const emojiPickerRef = useRef<HTMLDivElement | null>(null);
 
   const handleEmojiModal = (): void => setEmojiPicker(!showEmojiPicker);
   const handleEmojiClick = (emoji: EmojiClickData) => {
@@ -60,6 +56,32 @@ function MessageBar() {
     }
   };
 
+  const photoPickerChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] as File;
+    const reader = new FileReader();
+    const data = document.createElement("img");
+    reader.onload = function (event: ProgressEvent<FileReader>) {
+      data.src = event?.target?.result as string;
+      data.setAttribute("data-src", event?.target?.result as string);
+    };
+    reader.readAsDataURL(file);
+    setTimeout(() => {
+      setImage?.(data?.src);
+    }, 100);
+  };
+
+  useEffect(() => {
+    if (grabPhoto) {
+      const data = document.getElementById("photo-picker");
+      data?.click();
+      document.body.onfocus = (e) => {
+        setTimeout(() => {
+          setGrabPhoto(false);
+        }, 1000);
+      };
+    }
+  }, [grabPhoto]);
+
   return (
     <div className="bg-panel-header-background h-20 py-12 px-4 flex items-center gap-6 relative ">
       <>
@@ -83,6 +105,7 @@ function MessageBar() {
           <ImAttachment
             className="text-panel-header-icon cursor-pointer text-xl"
             title="Attach File"
+            onClick={() => setGrabPhoto(true)}
           />
         </div>
         <div className="w-full rounded-lg h-10 flex items-center">
@@ -108,6 +131,7 @@ function MessageBar() {
           </button>
         </div>
       </>
+      {grabPhoto && <PhotoPicker onChange={photoPickerChange} />}
     </div>
   );
 }
