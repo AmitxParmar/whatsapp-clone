@@ -31,10 +31,8 @@ function MessageBar() {
   );
   const dispatch = useDispatch();
 
-  const isValid = message === "";
-
   const sendMessage = async () => {
-    if (isValid) return console.log("message is empty");
+    if (message === "") return console.log("message is empty");
     try {
       const { data } = await axios.post<IMessage>(ADD_MESSAGE_ROUTE, {
         to: currentChatUser?.id,
@@ -42,7 +40,7 @@ function MessageBar() {
         message,
       });
       console.log(data, "what does post message returns?? make type outofit");
-      socket.emit("send-msg", {
+      (socket as Socket).emit("send-msg", {
         to: currentChatUser?.id,
         from: userInfo?.id,
         message: data.message,
@@ -124,7 +122,7 @@ function MessageBar() {
           />
         </div>
         <div className="flex w-10 items-center justify-center">
-          <button className={`${isValid ? "opacity-20" : null}`}>
+          <button className={`${message === "" ? "opacity-20" : null}`}>
             <MdSend
               className="text-panel-header-icon cursor-pointer text-xl"
               title="Send message"

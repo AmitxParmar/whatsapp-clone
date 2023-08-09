@@ -10,7 +10,7 @@ export const checkUser = async (req, res, next) => {
     const prisma = getPrismaInstance();
 
     const user = await prisma.user.findUnique({ where: { email } });
-    console.log("user check prisma", user);
+    
 
     if (!user) {
       console.log("user not found");
@@ -22,7 +22,7 @@ export const checkUser = async (req, res, next) => {
   } catch (err) {
     next(err);
     console.log(err);
-    throw new Error(err);
+    
   }
 };
 
@@ -80,7 +80,7 @@ export const getAllUsers = async (req, res, next) => {
       }
       userGroupedByInitialLetter[initialLetter].push(user);
     });
-    console.log(userGroupedByInitialLetter);
+    
     return res.status(200).send({ users: userGroupedByInitialLetter });
   } catch (err) {
     next(err);

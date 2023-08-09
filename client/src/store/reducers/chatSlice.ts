@@ -23,7 +23,7 @@ const chat = createSlice({
             state.socket = action.payload;
         },
         addMessage: (state, action: PayloadAction<IMessage>) => {
-            state.messages = [...state.messages as IMessage[], action.payload as IMessage]
+            state.messages = [...state?.messages, action.payload]
         }
     }
 })

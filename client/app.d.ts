@@ -7,7 +7,7 @@ type IUserProfile = {
 }
 
 type IMessage = {
-    id: string
+    id: number
     type: "text" | "file" | "image"
     message: string
     recieverId: number
@@ -20,8 +20,8 @@ type IMessage = {
 
 interface ChatState {
     currentChatUser: IUserProfile | null | undefined
-    messages: IMessage[] | null | []
-    addMessage: string
+    messages: IMessage[] | []
+    addMessage: IMessage | null | undefined
     socket: unknown | null
 }
 

@@ -1,9 +1,9 @@
+import { Server } from "socket.io";
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import AuthRoutes from "./routes/AuthRoutes.js";
 import MessageRoutes from "./routes/MessageRoutes.js";
-import { Server } from "socket.io";
 
 dotenv.config();
 const app = express();
@@ -34,7 +34,10 @@ io.on("connection", (socket) => {
     const sendUserSocket = onlineUsers.get(data.to);
     console.log(sendUserSocket, "sendSocketUser");
     if (sendUserSocket) {
-      console.log("if working too, meaning response right after receiving it");
+      console.log(
+        "if working too, meaning response right after receiving it",
+        data
+      );
       socket.to(sendUserSocket).emit("msg-recieve"),
         {
           from: data.from,
