@@ -5,13 +5,16 @@ import { RootState } from "@/store/store";
 import { calculateTime } from "@/utils/CalculateTime";
 
 import MessageStatus from "@/components/common/MessageStatus";
+import ImageMessage from "./ImageMessage";
 
 function ChatContainer() {
   const [Messagess, setMessages] = useState<IMessage[]>([]);
+
   const { userInfo } = useSelector((state: RootState) => state.user);
   const { messages, currentChatUser } = useSelector(
     (state: RootState) => state.chat
   );
+
   useEffect(() => {
     setMessages(messages);
   }, [messages]);
@@ -56,6 +59,7 @@ function ChatContainer() {
                     </div>
                   </div>
                 )}
+                {message.type === "image" && <ImageMessage message={message} />}
               </div>
             ))}
           </div>

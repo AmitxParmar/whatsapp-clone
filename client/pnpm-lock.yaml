@@ -57,8 +57,8 @@ dependencies:
     specifier: ^3.3.3
     version: 3.3.3
   wavesurfer.js:
-    specifier: ^6.6.4
-    version: 6.6.4
+    specifier: ^7.1.4
+    version: 7.1.4
   zego-express-engine-webrtc:
     specifier: 2.24.5
     version: 2.24.5
@@ -1971,8 +1971,8 @@ packages:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
     dev: false
 
-  /wavesurfer.js@6.6.4:
-    resolution: {integrity: sha512-nBbc0pD/3FdClxKUKL1UW2V9AJPL+JOjC8T6/YF9/FCAn4uo+H6Y8VBkXo9UJXIHoBewoc7iXj3tPeL0UCJhjA==}
+  /wavesurfer.js@7.1.4:
+    resolution: {integrity: sha512-El67n1Ljx8nvdHZqIFqIkIZp72iiv4jUPzYUg3J9BksFPLpEn/XPLfv2vyumAURq4gl7rPhcj16aqni4UZnHCg==}
     dev: false
 
   /webidl-conversions@3.0.1:

@@ -12,11 +12,12 @@ import type { Socket } from "socket.io-client";
 import OutsideClick from "../OutsideClickHandler";
 import PhotoPicker from "../common/PhotoPicker";
 import { addMessage, setMessages } from "@/store/reducers/chatSlice";
+import CaptureAudio from "../common/CaptureAudio";
 function MessageBar() {
   const [message, setMessage] = useState("");
   const [showEmojiPicker, setEmojiPicker] = useState(false);
   const [grabPhoto, setGrabPhoto] = useState(false);
-  const [image, setImage] = useState("");
+  const [showAudioRecorder, setShowAudioRecorder] = useState(false);
 
   const emojiPickerRef = useRef<HTMLDivElement | null>(null);
 
@@ -123,19 +124,21 @@ function MessageBar() {
         </div>
         <div className="flex w-10 items-center justify-center">
           <button className={`${message === "" ? "opacity-20" : null}`}>
-            <MdSend
+            {message.length ? <MdSend
               className="text-panel-header-icon cursor-pointer text-xl"
               title="Send message"
               onClick={() => sendMessage()}
-            />
-            <FaMicrophone
-              className="text-panel-header-icon cursor-pointer text-xl"
-              title="Record"
-            />
+            /> :
+              <FaMicrophone
+                className="text-panel-header-icon cursor-pointer text-xl"
+                title="Record"
+                onClick={() => setShowAudioRecorder(true)}
+              />}
           </button>
         </div>
       </>
       {grabPhoto && <PhotoPicker onChange={photoPickerChange} />}
+      {showAudioRecorder && <CaptureAudio hide={setShowAudioRecorder} />}
     </div>
   );
 }

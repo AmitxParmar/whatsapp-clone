@@ -6,10 +6,12 @@ import React from "react";
 import { useSelector } from "react-redux";
 import MessageStatus from "../common/MessageStatus";
 
-function ImageMessage({ message }) {
+function ImageMessage({ message }: { message: IMessage }) {
+  
   const currentChatUser = useSelector(
     (state: RootState) => state.chat.currentChatUser
   );
+  
   const userInfo = useSelector((state: RootState) => state.user.userInfo);
 
   return (

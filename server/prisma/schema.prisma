@@ -31,4 +31,7 @@ model Messages {
   message String
   messageStatus String @default("sent")
   createdAt DateTime @default(now())
+
+  @@index([recieverId])
+  @@index([senderId])
 }
