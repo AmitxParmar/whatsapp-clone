@@ -15,14 +15,9 @@ import {
 } from "react-icons/fa";
 import { MdSend } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import dynamic from "next/dynamic";
 import WaveSurfer from "wavesurfer.js";
-/* const WaveSurfer = dynamic(
-  () => import("wavesurfer.js").then((mod) => mod.default),
-  {
-    ssr: false,
-  }
-); */
+
+
 
 interface ICaptureAudio {
   hide: Dispatch<SetStateAction<boolean>>;
@@ -30,13 +25,16 @@ interface ICaptureAudio {
 
 function CaptureAudio({ hide }: ICaptureAudio) {
   const userInfo = useSelector((state: RootState) => state.user.userInfo);
-  const { socket, currentChatUser } = useSelector(
+  const {  currentChatUser } = useSelector(
     (state: RootState) => state.chat
   );
+
   const dispatch = useDispatch();
 
   const [isRecording, setIsRecording] = useState<boolean>(false);
-  const [recordedAudio, setRecordedAudio] = useState(null);
+  const [recordedAudio, setRecordedAudio] = useState<HTMLAudioElement | null>(
+    null
+  );
   const [waveform, setWaveform] = useState<WaveSurfer>();
   const [recordingDuration, setRecordingDuration] = useState(0);
   const [currentPlaybackTime, setCurrentPlaybackTime] = useState(0);
@@ -45,7 +43,7 @@ function CaptureAudio({ hide }: ICaptureAudio) {
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const mediaRecorderRef = useRef(null);
-  const waveformRef = useRef<HTMLElement | string | HTMLDivElement>("");
+  const waveformRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const wavesurfer = WaveSurfer.create({
@@ -65,7 +63,13 @@ function CaptureAudio({ hide }: ICaptureAudio) {
     if (waveform) handleStartRecording();
   }, []);
 
-  const handlePlayRecording = () => {};
+  const handlePlayRecording = () => {
+    if (recordedAudio) {
+      waveform?.stop();
+      waveform?.play();
+      recordedAudio.play();
+    }
+  };
   const handleStopRecording = () => {};
 
   const handleStartRecording = () => {};

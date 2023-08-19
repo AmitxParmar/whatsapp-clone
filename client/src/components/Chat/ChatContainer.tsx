@@ -17,6 +17,7 @@ function ChatContainer() {
 
   useEffect(() => {
     setMessages(messages);
+    console.log('it should also trigger when new message is added!!')
   }, [messages]);
 
   return (
