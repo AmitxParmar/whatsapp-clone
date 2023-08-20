@@ -30,8 +30,8 @@ io.on("connection", (socket) => {
   socket.on("add-user", (userId) => {
     onlineUsers.set(userId, socket.id);
   });
-  socket.on("send-msg", (data) => {
-    const sendUserSocket = onlineUsers.get(data.to);
+  socket.on("send-msg", async (data) => {
+    const sendUserSocket = await onlineUsers.get(data.to);
     console.log(sendUserSocket, "sendSocketUser");
     if (sendUserSocket) {
       console.log(

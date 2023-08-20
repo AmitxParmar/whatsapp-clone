@@ -6,7 +6,7 @@ import { type Socket } from "socket.io-client";
 const initialState = {
     currentChatUser: null,
     messages: [],
-    socket: null as (Socket | null)
+    /* socket: null as (Socket | null) */
 } as (ChatState)
 
 const chat = createSlice({
@@ -19,9 +19,9 @@ const chat = createSlice({
         setMessages: (state, action: PayloadAction<IMessage[]>) => {
             state.messages = action.payload;
         },
-        setSocket: (state, action) => {
+       /*  setSocket: (state, action) => {
             state.socket = action.payload;
-        },
+        }, */
         addMessage: (state, action: PayloadAction<IMessage>) => {
             state.messages = [...state?.messages, action.payload]
         }
@@ -31,7 +31,7 @@ const chat = createSlice({
 export const {
     changeCurrentChatUser,
     setMessages,
-    setSocket,
+    /* setSocket, */
     addMessage
 } = chat.actions;
 

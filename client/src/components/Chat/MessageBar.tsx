@@ -8,16 +8,19 @@ import { BsEmojiSmile } from "react-icons/bs";
 import { FaMicrophone } from "react-icons/fa";
 import { ImAttachment } from "react-icons/im";
 import { MdSend } from "react-icons/md";
-import type { Socket } from "socket.io-client";
+/* import type { Socket } from "socket.io-client"; */
 import OutsideClick from "../OutsideClickHandler";
 import PhotoPicker from "../common/PhotoPicker";
 import { addMessage, setMessages } from "@/store/reducers/chatSlice";
 import CaptureAudio from "../common/CaptureAudio";
+import { useSocket } from "@/services/socketService";
 function MessageBar() {
   const [message, setMessage] = useState("");
   const [showEmojiPicker, setEmojiPicker] = useState(false);
   const [grabPhoto, setGrabPhoto] = useState(false);
   const [showAudioRecorder, setShowAudioRecorder] = useState(false);
+
+  const socket = useSocket();
 
   const emojiPickerRef = useRef<HTMLDivElement | null>(null);
 
@@ -27,26 +30,24 @@ function MessageBar() {
   };
 
   const { userInfo } = useSelector((state: RootState) => state.user);
-  const { currentChatUser, socket } = useSelector(
-    (state: RootState) => state.chat
-  );
+  const { currentChatUser } = useSelector((state: RootState) => state.chat);
   const dispatch = useDispatch();
 
   const sendMessage = async () => {
     if (message === "") return console.log("message is empty");
     try {
-      const { data } = await axios.post<IMessage>(ADD_MESSAGE_ROUTE, {
+      const { data } = await axios.post(ADD_MESSAGE_ROUTE, {
         to: currentChatUser?.id,
         from: userInfo?.id,
         message,
       });
       console.log(data, "what does post message returns?? make type outofit");
-      (socket as Socket).emit("send-msg", {
+      socket.emit("send-msg", {
         to: currentChatUser?.id,
         from: userInfo?.id,
         message: data.message,
       });
-      dispatch(addMessage({ ...data }));
+      dispatch(addMessage({ ...data.message }));
       setMessage("");
     } catch (err) {
       console.log(err);
@@ -124,16 +125,19 @@ function MessageBar() {
         </div>
         <div className="flex w-10 items-center justify-center">
           <button className={`${message === "" ? "opacity-20" : null}`}>
-            {message.length ? <MdSend
-              className="text-panel-header-icon cursor-pointer text-xl"
-              title="Send message"
-              onClick={() => sendMessage()}
-            /> :
+            {message.length ? (
+              <MdSend
+                className="text-panel-header-icon cursor-pointer text-xl"
+                title="Send message"
+                onClick={() => sendMessage()}
+              />
+            ) : (
               <FaMicrophone
                 className="text-panel-header-icon cursor-pointer text-xl"
                 title="Record"
                 onClick={() => setShowAudioRecorder(true)}
-              />}
+              />
+            )}
           </button>
         </div>
       </>

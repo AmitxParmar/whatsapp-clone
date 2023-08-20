@@ -8,17 +8,17 @@ import MessageStatus from "@/components/common/MessageStatus";
 import ImageMessage from "./ImageMessage";
 
 function ChatContainer() {
-  const [Messagess, setMessages] = useState<IMessage[]>([]);
+  /* const [Messagess, setMessages] = useState<IMessage[]>([]); */
 
   const { userInfo } = useSelector((state: RootState) => state.user);
   const { messages, currentChatUser } = useSelector(
     (state: RootState) => state.chat
   );
 
-  useEffect(() => {
+  /* useEffect(() => {
     setMessages(messages);
     console.log('it should also trigger when new message is added!!')
-  }, [messages]);
+  }, [messages]); */
 
   return (
     <div className="h-[80vh] w-full relative flex-grow overflow-auto custom-scrollbar">
@@ -26,7 +26,7 @@ function ChatContainer() {
       <div className="mx-10 my-6 relative bottom-0 z-40">
         <div className="flex w-full">
           <div className="flex flex-col justify-end w-full gap-1 overflow-auto">
-            {Messagess?.map((message, index) => (
+            {messages?.map((message, index) => (
               <div
                 key={message.id + index}
                 className={`flex ${

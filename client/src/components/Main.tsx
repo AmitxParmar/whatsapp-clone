@@ -12,16 +12,18 @@ import Chat from "./Chat/Chat";
 import { auth } from "@/utils/FirebaseConfig";
 import { CHECK_USER_ROUTE, GET_MESSAGES_ROUTE, HOST } from "@/utils/ApiRoutes";
 import { setUserInfo } from "@/store/reducers/userSlice";
-import { setMessages, setSocket, addMessage } from "@/store/reducers/chatSlice";
+import { setMessages, addMessage } from "@/store/reducers/chatSlice";
 import type { AppDispatch, RootState } from "@/store/store";
+import { useSocket } from "@/services/socketService";
 
 function Main() {
-  const socket = useRef<Socket | null>(null);
+  /* const socket = useRef<Socket | null>(null); */
   const router = useRouter();
   const [socketEvent, setSocketEvent] = useState(false);
 
   const { userInfo } = useSelector((state: RootState) => state.user);
   const { currentChatUser } = useSelector((state: RootState) => state.chat);
+  const socket = useSocket();
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -50,22 +52,22 @@ function Main() {
 
   useEffect(() => {
     if (userInfo) {
-      socket.current = io(HOST);
-      socket.current.emit("add-user", userInfo.id);
-      dispatch(setSocket(socket.current));
+      /* socket.current = io(HOST); */
+      socket.emit("add-user", userInfo.id);
+      /* dispatch(setSocket(socket.current)); */
       console.log(socket, "socket for types");
     }
   }, [userInfo]);
 
   useEffect(() => {
-    if (socket.current && !socketEvent) {
-      socket.current.on("msg-recieve", (data) => {
+    if (socket && !socketEvent) {
+      socket.on("msg-recieve", (data) => {
         console.log(data, "new message received using socket data");
         dispatch(addMessage({ ...data.message }));
       });
       setSocketEvent(true);
     }
-  }, [socket.current]);
+  }, [socket]);
 
   useEffect(() => {
     const getMessages = async () => {
